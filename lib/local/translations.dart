@@ -119,6 +119,7 @@ class MyTranslations extends Translations {
           "driverGender": "Driver Gender",
           "New request accepted":"New request accepted",
           "My Orders":"My Orders",
+          "The order was canceled successfully":"The order was canceled successfully",
         },
         'ar': {
           'welcome_taxi_service': 'مرحبًا بك في خدمة حجز التاكسي',
@@ -234,6 +235,7 @@ class MyTranslations extends Translations {
           "driverGender": "الجنس",
           "New request accepted":"طلب جديد تم قبوله",
           "My Orders":"طلباتي",
+          "The order was canceled successfully":"تمت عملية الغاء الطلب بنجاح ",
         },
       };
 }

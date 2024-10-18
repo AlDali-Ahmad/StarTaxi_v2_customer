@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tawsella_final/Pages/bottombar.dart';
+import 'package:tawsella_final/Pages/chat_screen.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import 'package:tawsella_final/utils/url.dart';
 
@@ -14,12 +16,48 @@ class MyOrdersPage extends StatefulWidget {
 
 class _MyOrdersPageState extends State<MyOrdersPage> {
   var notifications = <Map<String, dynamic>>[].obs;
-  var isLoading = false.obs; 
+  var isLoading = false.obs;
 
   @override
   void initState() {
     super.initState();
     fetchLatestMovement();
+  }
+
+  Future<void> cancelMovement() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    String? movement_id = prefs.getString('movement_id');
+    final url = '${Url.url}api/movements/cancel/$movement_id';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          '',
+          'The order was canceled successfully'.tr,
+          colorText: AppColors.white,
+        );
+        print('Request cancelled successfully');
+        // fetchLatestMovement();
+        setState(() {
+          
+        });
+        Get.off(MyOrdersPage());
+      } else {
+        print(movement_id);
+        print('Failed to cancel request, status code: ${response.statusCode}');
+        print('Failed to: ${response.body}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   Future<void> fetchLatestMovement() async {
@@ -40,6 +78,13 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        print(data);
+        print(data['driver']['user_id']);
+        String chat_id = data['chat_id'];
+        String driver_id = data['driver']['user_id'];
+        await prefs.setString('chat_id', chat_id);
+        await prefs.setString('driver_id', driver_id);
+        print(data['chat_id']);
         if (data != null) {
           notifications.add({
             'driverName': data['driver']['name'],
@@ -48,6 +93,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
           });
         }
       } else {
+        print(response.body);
         print('Failed to load data, status code: ${response.statusCode}');
       }
     } catch (e) {
@@ -123,11 +169,28 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     Text('${'driverName'.tr}: ${notification['driverName']}'),
                     Text('${'driverPhone'.tr}: ${notification['driverPhone']}'),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        
-                      },
-                      child: Text('Order Cancel'.tr,style:TextStyle(color: AppColors.orange2),),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            cancelMovement();
+                          },
+                          child: Text(
+                            'Order Cancel'.tr,
+                            style: TextStyle(color: AppColors.orange2),
+                          ),
+                        ),
+                        Spacer(),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(() => ChatScreen());
+                          },
+                          child: Text(
+                            'Go To Chat'.tr,
+                            style: TextStyle(color: AppColors.orange2),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

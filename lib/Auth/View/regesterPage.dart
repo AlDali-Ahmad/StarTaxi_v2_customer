@@ -348,7 +348,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
-        prefs.setString('Id', id);
+        prefs.setString('id', id);
         prefs.setString('name', name);
         prefs.setString('email', email);
         prefs.setString('phone', phone);

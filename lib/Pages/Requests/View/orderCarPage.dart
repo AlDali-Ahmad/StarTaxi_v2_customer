@@ -80,7 +80,7 @@ class _OrderCarPageState extends State<OrderCarPage> {
   }
 
   CameraPosition cameraPosition = const CameraPosition(
-    target: LatLng(33.504307, 36.304141),
+    target: LatLng(36.586038, 37.044871),
     zoom: 10.4746,
   );
   final TextEditingController destination = TextEditingController();
@@ -143,12 +143,11 @@ Future<void> sendLocationToDataBase() async {
       var responseBody = jsonDecode(response.body);
       String movementId = responseBody['data']['movement_id'];
 
-      // حفظ الـ movement_id في SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('movement_id', movementId);
 
       print('تم إرسال بيانات الموقع بنجاح.');
-      print('Movement ID: $movementId');  // طباعة الـ movement_id
+      print('Movement ID: $movementId');  
 
       // عرض رسالة نجاح باستخدام Get.snackbar
       Get.snackbar(
