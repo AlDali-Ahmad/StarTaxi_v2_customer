@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/NotificationController.dart';
 import 'package:tawsella_final/Pages/splash_screen.dart';
-import 'package:tawsella_final/local/local_Controller.dart';
 import 'package:tawsella_final/local/translations.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 
@@ -47,7 +46,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    MyLocalController controller = Get.put(MyLocalController());
+    // MyLocalController controller = Get.put(MyLocalController());
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

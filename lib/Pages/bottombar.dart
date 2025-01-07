@@ -37,7 +37,6 @@ class _BottombarState extends State<Bottombar> {
   int currentIndex = 0;
 
   late WebSocketChannel _channel;
-  String _receivedMessage = 'No message received yet';
   String? id;
   String? _token;
   List<String> notifications = [];
@@ -45,7 +44,7 @@ class _BottombarState extends State<Bottombar> {
   final int _maxReconnectAttempts =
       5; // Limit for the number of reconnect attempts
   final Duration _reconnectDelay =
-      Duration(seconds: 5); // Delay before reconnecting
+      const Duration(seconds: 5); // Delay before reconnecting
 
   @override
   void initState() {
@@ -62,7 +61,7 @@ class _BottombarState extends State<Bottombar> {
       if (id != null && _token != null) {
         _connectToWebSocket();
       } else {
-        print('Failed to load user data: id or token is null');
+        log('Failed to load user data: id or token is null');
       }
     });
   }
@@ -77,14 +76,12 @@ class _BottombarState extends State<Bottombar> {
 
     _channel.stream.listen(
       (event) async {
-        print('Received event: $event');
-
-        // إذا تم تأسيس الاتصال
+        log('Received event: $event');
         if (event.contains('connection_established')) {
           final decodedEvent = jsonDecode(event);
           final decodeData = jsonDecode(decodedEvent['data']);
           final socketId = decodeData['socket_id'];
-          print('Socket ID: $socketId'); // طباعة Socket ID
+          log('Socket ID: $socketId'); 
 
           const authUrl = 'http://10.0.2.2:8000/api/broadcasting/auth';
           final authResponse = await http.post(
@@ -101,7 +98,7 @@ class _BottombarState extends State<Bottombar> {
 
           if (authResponse.statusCode == 200) {
             final authData = jsonDecode(authResponse.body);
-            print('Auth data: $authData');
+            log('Auth data: $authData');
             _channel.sink.add(jsonEncode({
               "event": "pusher:subscribe",
               "data": {
@@ -110,20 +107,18 @@ class _BottombarState extends State<Bottombar> {
               },
             }));
           } else {
-            print('Failed to authenticate: ${authResponse.body}');
+            log('Failed to authenticate: ${authResponse.body}');
           }
         }
-
-        // معالجة الأحداث الأخرى
         try {
           final decodedEvent = jsonDecode(event);
-          print('Decoded event: $decodedEvent');
+          log('Decoded event: $decodedEvent');
           if (decodedEvent is Map<String, dynamic>) {
-            print('Decoded event:222 $decodedEvent');
+            log('Decoded event:222 $decodedEvent');
 
             if (decodedEvent.containsKey('event') &&
                 decodedEvent['event'] == 'acceptRequest') {
-              print('Decoded event:333 $decodedEvent');
+              log('Decoded event:333 $decodedEvent');
               if (mounted) {
                 setState(() {
                   final data = jsonDecode(decodedEvent['data']);
@@ -132,8 +127,6 @@ class _BottombarState extends State<Bottombar> {
                       data['customer'] != null &&
                       data['driver'] != null) {
                     final customer = data['customer'];
-                    final driver = data['driver'];
-
                     // بيانات الزبون
                     final driverName =
                         customer['driver']['name'] ?? 'غير متوفر';
@@ -156,21 +149,21 @@ class _BottombarState extends State<Bottombar> {
                     );
                     playNotificationSound();
                   } else {
-                    print('بيانات غير كافية لعرض الإشعار');
+                    log('بيانات غير كافية لعرض الإشعار');
                   }
                 });
               }
             }
           }
         } catch (e) {
-          print('Error decoding event: $e');
+          log('Error decoding event: $e');
         }
       },
       onError: (error) {
-        print('WebSocket error: $error');
+        log('WebSocket error: $error');
       },
       onDone: () {
-        print('WebSocket connection closed');
+        log('WebSocket connection closed');
         _reconnect();
       },
       cancelOnError: true,

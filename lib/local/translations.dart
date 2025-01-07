@@ -126,7 +126,6 @@ class MyTranslations extends Translations {
           'Please enter your password':'',
           'Please enter your full name':'',
           '':'',
-          '':'',
         },
         'ar': {
           'welcome_taxi_service': 'مرحبًا بك في خدمة حجز التاكسي',

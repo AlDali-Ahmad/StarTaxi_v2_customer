@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,8 +24,6 @@ class OrderCarPage extends StatefulWidget {
 }
 
 class _OrderCarPageState extends State<OrderCarPage> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
   GoogleMapController? gms;
   List<Marker> markers = [];
   Future<void> initalLocation() async {
@@ -34,7 +33,7 @@ class _OrderCarPageState extends State<OrderCarPage> {
     // التحقق مما إذا كانت خدمات الموقع مفعلة
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      print('Location services are disabled.');
+      log('Location services are disabled.');
       return;
     }
     permission = await Geolocator.checkPermission();
@@ -51,16 +50,16 @@ class _OrderCarPageState extends State<OrderCarPage> {
 
       // إضافة Marker على الخريطة وتحريك الكاميرا إلى الموقع الحالي
       markers.add(Marker(
-          markerId: MarkerId("2"),
+          markerId: const MarkerId("2"),
           position: LatLng(position.latitude, position.longitude)));
       gms!.animateCamera(CameraUpdate.newLatLng(
           LatLng(position.latitude, position.longitude)));
       // startLatitude = position.latitude;
       // startLongitude = position.longitude;
-      print('***********************');
-      print(position.latitude);
-      print(position.longitude);
-      print('***************************');
+      log('***********************');
+      log('${position.latitude}');
+      log('${position.longitude}');
+      log('***************************');
       setState(() {});
     }
   }
@@ -97,89 +96,86 @@ class _OrderCarPageState extends State<OrderCarPage> {
     });
   }
 
-Future<void> sendLocationToDataBase() async {
-  String apiUrl = '${Url.url}api/movements';
-  try {
-    // الحصول على الموقع الحالي
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-
-    // التحقق من أن الحقول غير فارغة
-    if (location.text.isEmpty ||
-        destination.text.isEmpty ||
-        _gender == null) {
-      CustomSnackbar.show(
-        context,
-        'الرجاء ملئ كامل الحقول',
+  Future<void> sendLocationToDataBase() async {
+    String apiUrl = '${Url.url}api/movements';
+    try {
+      // الحصول على الموقع الحالي
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
       );
-      return;
+
+      // التحقق من أن الحقول غير فارغة
+      if (location.text.isEmpty ||
+          destination.text.isEmpty ||
+          _gender == null) {
+        CustomSnackbar.show(
+          context,
+          'الرجاء ملئ كامل الحقول',
+        );
+        return;
+      }
+
+      // إعداد البيانات لإرسالها إلى الـ API
+      Map<String, dynamic> payload = {
+        'movement_type_id': _selectedValue,
+        'start_latitude': position.latitude,
+        'start_longitude': position.longitude,
+        'start_address': location.text,
+        'destination_address': destination.text,
+        'gender': _gender,
+      };
+
+      // إرسال الطلب
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token'
+        },
+        body: jsonEncode(payload),
+      );
+
+      // التحقق من نجاح الطلب
+      if (response.statusCode == 200) {
+        // تحليل الاستجابة لاستخراج الـ movement_id
+        var responseBody = jsonDecode(response.body);
+        String movementId = responseBody['data']['movement_id'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('movement_id', movementId);
+
+        log('تم إرسال بيانات الموقع بنجاح.');
+        log('Movement ID: $movementId');
+
+        // عرض رسالة نجاح باستخدام Get.snackbar
+        Get.snackbar(
+          '',
+          'Your request has been created successfully'.tr,
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5),
+          colorText: Colors.white,
+        );
+
+        // الانتقال إلى الصفحة التالية بعد النجاح
+        Get.off(() => const Bottombar());
+      } else if (response.statusCode == 429) {
+        Get.snackbar(
+          '',
+          'You have recently requested a car. Please wait a moment while your request is being processed'
+              .tr,
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5),
+          colorText: Colors.white,
+        );
+      } else {
+        log('فشل في إرسال بيانات الموقع. الرمز الحالة: ${response.statusCode}');
+        log('فشل في إرسال بيانات الموقع. الاستجابة: ${response.body}');
+      }
+    } catch (e) {
+      log('حدث خطأ أثناء إرسال بيانات الموقع: $e');
     }
-
-    // إعداد البيانات لإرسالها إلى الـ API
-    Map<String, dynamic> payload = {
-      'movement_type_id': _selectedValue,
-      'start_latitude': position.latitude,
-      'start_longitude': position.longitude,
-      'start_address': location.text,
-      'destination_address': destination.text,
-      'gender': _gender,
-    };
-
-    // إرسال الطلب
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $_token'
-      },
-      body: jsonEncode(payload),
-    );
-
-    // التحقق من نجاح الطلب
-    if (response.statusCode == 200) {
-      // تحليل الاستجابة لاستخراج الـ movement_id
-      var responseBody = jsonDecode(response.body);
-      String movementId = responseBody['data']['movement_id'];
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('movement_id', movementId);
-
-      print('تم إرسال بيانات الموقع بنجاح.');
-      print('Movement ID: $movementId');  
-
-      // عرض رسالة نجاح باستخدام Get.snackbar
-      Get.snackbar(
-        '',
-        'Your request has been created successfully'.tr,
-        snackPosition: SnackPosition.TOP,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-      );
-
-      // الانتقال إلى الصفحة التالية بعد النجاح
-      Get.off(() => const Bottombar());
-    }else if (response.statusCode == 429){
-      Get.snackbar(
-        '',
-        'You have recently requested a car. Please wait a moment while your request is being processed'.tr,
-        snackPosition: SnackPosition.TOP,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-      );
-    } 
-    else {
-      // إذا حدث خطأ في الاستجابة
-      print('فشل في إرسال بيانات الموقع. الرمز الحالة: ${response.statusCode}');
-      print('فشل في إرسال بيانات الموقع. الاستجابة: ${response.body}');
-    }
-  } catch (e) {
-    // التعامل مع الأخطاء
-    print('حدث خطأ أثناء إرسال بيانات الموقع: $e');
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,9 +184,9 @@ Future<void> sendLocationToDataBase() async {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.BackgroundColor,
-        title:  Text(
+        title: Text(
           'Customize order'.tr,
-          style: TextStyle(color: Colors.amber),
+          style: const TextStyle(color: Colors.amber),
         ),
         leading: IconButton(
           onPressed: () {
@@ -214,10 +210,10 @@ Future<void> sendLocationToDataBase() async {
 
                     // if (placemarks.isNotEmpty) {
                     //   print('***************************************************');
-                    print('**************');
-                    print(latLng.latitude);
-                    print(latLng.longitude);
-                    print('**************');
+                    log('**************');
+                    log('${latLng.latitude}');
+                    log('${latLng.longitude}');
+                    log('**************');
                     // Get.snackbar('title', '${placemarks[0].country}');
                     // print(placemarks[0].country);
                     // print(placemarks[0].street);
@@ -226,7 +222,7 @@ Future<void> sendLocationToDataBase() async {
                     // print(placemarks[0].administrativeArea);
 
                     markers.add(Marker(
-                        markerId: MarkerId("1"),
+                        markerId: const MarkerId("1"),
                         position: LatLng(latLng.latitude, latLng.longitude)));
                     setState(() {});
                     //   } else {
@@ -255,7 +251,7 @@ Future<void> sendLocationToDataBase() async {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                     Row(
+                    Row(
                       children: [
                         CustomText(
                           text: 'Select your destination'.tr,
@@ -275,11 +271,10 @@ Future<void> sendLocationToDataBase() async {
                       iconData: Icons.car_repair,
                     ),
                     SizedBox(height: 10.h),
-                     Row(
+                    Row(
                       children: [
                         CustomText(
                           text: 'Select the current location'.tr,
-                          
                           fontSize: 15,
                           color: AppColors.white,
                         ),
@@ -304,19 +299,21 @@ Future<void> sendLocationToDataBase() async {
                               width: 150.w,
                               child: DropdownButtonFormField<String>(
                                   value: _selectedValue,
-                                  items:  [
+                                  items: [
                                     DropdownMenuItem(
                                       value: 't-m-t-1',
                                       child: Text(
                                         'Internal request'.tr,
-                                        style: TextStyle(color: Colors.black),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ),
                                     ),
                                     DropdownMenuItem(
                                       value: 't-m-t-2',
                                       child: Text(
                                         'external request'.tr,
-                                        style: TextStyle(color: Colors.black),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ),
                                     ),
                                   ],
@@ -372,19 +369,21 @@ Future<void> sendLocationToDataBase() async {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
                                     value: _gender,
-                                    items:[
+                                    items: [
                                       DropdownMenuItem(
                                         value: 'male',
                                         child: Text(
                                           'Male'.tr,
-                                          style: TextStyle(fontSize: 16.0),
+                                          style:
+                                              const TextStyle(fontSize: 16.0),
                                         ),
                                       ),
                                       DropdownMenuItem(
                                         value: 'female',
                                         child: Text(
                                           'Female'.tr,
-                                          style: TextStyle(fontSize: 16.0),
+                                          style:
+                                              const TextStyle(fontSize: 16.0),
                                         ),
                                       ),
                                     ],
@@ -393,9 +392,9 @@ Future<void> sendLocationToDataBase() async {
                                         _gender = value!;
                                       });
                                     },
-                                    hint:Text(
+                                    hint: Text(
                                       'Choose gender'.tr,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 16.0,
                                           color: Colors.black26),
                                     ),
