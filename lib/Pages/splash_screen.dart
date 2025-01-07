@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tawsella_final/Auth/View/loginPage.dart';
 import 'package:tawsella_final/Auth/View/verification_code.dart';
 import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/Pages/welcome_pages.dart';
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       mail_code_verified_at = prefs.getString('mail_code_verified_at');
       token = prefs.getString('token');
-      print('Token: $token');
+      log('Token: $token');
     });
   }
 
@@ -41,15 +41,15 @@ class _SplashScreenState extends State<SplashScreen> {
         //   Get.off(LoginPage());
         // }
         if (mail_code_verified_at != null && mail_code_verified_at !="a" && token != null) {
-          print('mail_code_verified_at is null: $mail_code_verified_at');
-          Get.off(() => Bottombar());
+          log('mail_code_verified_at is null: $mail_code_verified_at');
+          Get.off(() => const Bottombar());
         } else if (token  != null && (mail_code_verified_at != null || mail_code_verified_at !="a")) {
-          print('Token fff: $token');
-          print('mail_code_verified_at is null: $mail_code_verified_at');
-          Get.off(() => VerifyEmailPage());
+          log('Token fff: $token');
+          log('mail_code_verified_at is null: $mail_code_verified_at');
+          Get.off(() => const VerifyEmailPage());
         }else{
           
-          print('mail_code_verified_at is null: $mail_code_verified_at');
+          log('mail_code_verified_at is null: $mail_code_verified_at');
           Get.off(() => WelcomeScreens());
           // Get.off(() => Bottombar());
         }

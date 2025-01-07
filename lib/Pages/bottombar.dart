@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _BottombarState extends State<Bottombar> {
       await _audioPlayer.setSource(AssetSource('sound/notification.mp3'));
       await _audioPlayer.resume();
     } catch (e) {
-      print('Error playing sound: $e');
+      log('Error playing sound: $e');
     }
   }
 

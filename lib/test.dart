@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tawsella_final/Auth/Controller/UserPreferences.dart';
@@ -33,7 +34,7 @@ class _WebSocketListenerState extends State<WebSocketListener> {
       if (id != null && _token != null) {
         _connectToWebSocket();
       } else {
-        print('Failed to load user data: id or token is null');
+        log('Failed to load user data: id or token is null');
       }
     });
   }
@@ -46,14 +47,14 @@ class _WebSocketListenerState extends State<WebSocketListener> {
 
     _channel.stream.listen(
       (event) async {
-        print('Received event: $event');
+        log('Received event: $event');
 
         // إذا تم تأسيس الاتصال
         if (event.contains('connection_established')) {
           final decodedEvent = jsonDecode(event);
           final decodeData = jsonDecode(decodedEvent['data']);
           final socketId = decodeData['socket_id'];
-          print('Socket ID: $socketId'); // طباعة Socket ID
+          log('Socket ID: $socketId'); 
 
           const authUrl = 'http://10.0.2.2:8000/api/broadcasting/auth';
           final authResponse = await http.post(
@@ -69,7 +70,7 @@ class _WebSocketListenerState extends State<WebSocketListener> {
 
           if (authResponse.statusCode == 200) {
             final authData = jsonDecode(authResponse.body);
-            print('Auth data: $authData'); 
+            log('Auth data: $authData'); 
             _channel.sink.add(jsonEncode({
               "event": "pusher:subscribe",
               "data": {
@@ -78,39 +79,39 @@ class _WebSocketListenerState extends State<WebSocketListener> {
               },
             }));
           } else {
-            print('Failed to authenticate: ${authResponse.body}');
+            log('Failed to authenticate: ${authResponse.body}');
           }
         }
 
         // معالجة الأحداث الأخرى
         try {
           final decodedEvent = jsonDecode(event);
-          print('Decoded event: $decodedEvent'); // طباعة الحدث المفكك
+          log('Decoded event: $decodedEvent'); // طباعة الحدث المفكك
           if (decodedEvent is Map<String, dynamic>) {
-          print('Decoded event:222 $decodedEvent'); // طباعة الحدث المفكك
+          log('Decoded event:222 $decodedEvent'); // طباعة الحدث المفكك
 
             if (decodedEvent.containsKey('event') &&
                 decodedEvent['event'] == 'acceptRequest') {
-          print('Decoded event:333 $decodedEvent'); // طباعة الحدث المفكك
+          log('Decoded event:333 $decodedEvent'); // طباعة الحدث المفكك
               if (mounted) {
                 setState(() {
                   final data = jsonDecode(decodedEvent['data']);
                   _receivedMessage = 'recived';
                 });
-                print(
-                    'Accepted request data: ${decodedEvent['data']}'); // طباعة بيانات الطلب المقبول
+                log(
+                    'Accepted request data: ${decodedEvent['data']}');
               }
             }
           }
         } catch (e) {
-          print('Error decoding event: $e');
+          log('Error decoding event: $e');
         }
       },
       onError: (error) {
-        print('WebSocket error: $error');
+        log('WebSocket error: $error');
       },
       onDone: () {
-        print('WebSocket connection closed');
+        log('WebSocket connection closed');
       },
       cancelOnError: true,
     );

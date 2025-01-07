@@ -1,12 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/Auth/Controller/UserPreferences.dart';
 import 'package:tawsella_final/Auth/Controller/auth_controller.dart';
 import 'package:tawsella_final/Auth/View/user_info.dart';
 import 'package:tawsella_final/Auth/View/verification_code.dart';
-import 'package:tawsella_final/Pages/notification.dart';
 import 'package:tawsella_final/components/custom_alert_dialog.dart';
 import 'package:tawsella_final/components/custom_text.dart';
 import 'package:tawsella_final/local/lang_Page.dart';
@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         throw Exception('Failed to load phone number');
       }
     } catch (e) {
-      print('Error fetching phone number: $e');
+      log('Error fetching phone number: $e');
       return null;
     }
   }
@@ -95,17 +95,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 120.w,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              print('Error loading image: $error');
+                              log('Error loading image: $error');
                               return Image.asset(
                                 'assets/images/car1.png',
                               );
                             },
                           ),
                         ),
-                        // عرض الاسم المحفوظ
                         title: Text(
-                          name, // هنا نعرض الاسم
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(email),
                         trailing: Container(
@@ -131,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icons.language,
                         title: 'Languages'.tr,
                         onTap: () {
-                          Get.to(LanguagesPage());
+                          Get.to(const LanguagesPage());
                         },
                       ),
                       SizedBox(height: 5.h),
@@ -140,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: 'Notifications'.tr,
                         onTap: () {
                           // Get.to(NotificationWidget());
-                          Get.to(VerifyEmailPage());
+                          Get.to(const VerifyEmailPage());
                         },
                       ),
                       SizedBox(height: 5.h),
@@ -172,9 +171,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onConfirm: () async {
                                   try {
                                     await AuthService.logout();
-                                    print("Logged out successfully");
+                                    log("Logged out successfully");
                                   } catch (error) {
-                                    print("Error during logout: $error");
+                                    log("Error during logout: $error");
                                   }
                                 },
                                 icon: Icons.logout,
@@ -187,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                  Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: CustomText(
                       text: 'Copyright All right reserved'.tr,
                       alignment: Alignment.center,

@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/Pages/chat_screen.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import 'package:tawsella_final/utils/url.dart';
@@ -44,19 +44,17 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
           'The order was canceled successfully'.tr,
           colorText: AppColors.white,
         );
-        print('Request cancelled successfully');
+        log('Request cancelled successfully');
         // fetchLatestMovement();
-        setState(() {
-          
-        });
+        setState(() {});
         Get.off(MyOrdersPage());
       } else {
-        print(movement_id);
-        print('Failed to cancel request, status code: ${response.statusCode}');
-        print('Failed to: ${response.body}');
+        log('${movement_id}');
+        log('Failed to cancel request, status code: ${response.statusCode}');
+        log('Failed to: ${response.body}');
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
     }
   }
 
@@ -78,13 +76,13 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print(data);
-        print(data['driver']['user_id']);
+        log(data);
+        log(data['driver']['user_id']);
         String chat_id = data['chat_id'];
         String driver_id = data['driver']['user_id'];
         await prefs.setString('chat_id', chat_id);
         await prefs.setString('driver_id', driver_id);
-        print(data['chat_id']);
+        log(data['chat_id']);
         if (data != null) {
           notifications.add({
             'driverName': data['driver']['name'],
@@ -93,13 +91,13 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
           });
         }
       } else {
-        print(response.body);
-        print('Failed to load data, status code: ${response.statusCode}');
+        log(response.body);
+        log('Failed to load data, status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
     } finally {
-      isLoading.value = false; // انتهاء عملية التحميل
+      isLoading.value = false;
     }
   }
 
@@ -122,7 +120,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
       ),
       body: Obx(() {
         if (isLoading.value) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.orange1),
             ),
@@ -177,17 +175,17 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           },
                           child: Text(
                             'Order Cancel'.tr,
-                            style: TextStyle(color: AppColors.orange2),
+                            style: const TextStyle(color: AppColors.orange2),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         ElevatedButton(
                           onPressed: () {
                             Get.to(() => ChatScreen());
                           },
                           child: Text(
                             'Go To Chat'.tr,
-                            style: TextStyle(color: AppColors.orange2),
+                            style: const TextStyle(color: AppColors.orange2),
                           ),
                         ),
                       ],

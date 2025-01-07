@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tawsella_final/Auth/View/loginPage.dart';
 import 'package:tawsella_final/Pages/splash_screen.dart';
 import 'package:tawsella_final/utils/url.dart';
 
@@ -44,7 +44,7 @@ class AuthService {
         prefs.setString('email', email);
         prefs.setString('email', currentEmail);
         prefs.setString('mail_code_verified_at', mail_code_verified_at);
-        print('token zsssss:${token}');
+        log('token zsssss:${token}');
         return responseData;
       } else if (response.statusCode == 422) {
         return {
