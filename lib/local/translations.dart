@@ -120,6 +120,13 @@ class MyTranslations extends Translations {
           "New request accepted":"New request accepted",
           "My Orders":"My Orders",
           "The order was canceled successfully":"The order was canceled successfully",
+          'Please enter your email':'',
+          'Please enter a valid email address':'',
+          'Password must be at least 6 characters long':'',
+          'Please enter your password':'',
+          'Please enter your full name':'',
+          '':'',
+          '':'',
         },
         'ar': {
           'welcome_taxi_service': 'مرحبًا بك في خدمة حجز التاكسي',

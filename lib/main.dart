@@ -7,6 +7,7 @@ import 'package:tawsella_final/Pages/splash_screen.dart';
 import 'package:tawsella_final/local/local_Controller.dart';
 import 'package:tawsella_final/local/translations.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
+
 SharedPreferences? sharepref;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,8 +15,8 @@ Future<void> main() async {
   Get.put(NotificationController());
   runApp(
     ScreenUtilInit(
-      designSize: Size(360, 690),
-      builder: (context, child) => MyApp(),
+      designSize: const Size(360, 690),
+      builder: (context, child) => const MyApp(),
     ),
   );
 }
@@ -36,9 +37,7 @@ class _MyAppState extends State<MyApp> {
     checkLoginStatus();
   }
 
-  // Function to check login status from SharedPreferences
   Future<void> checkLoginStatus() async {
-    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     setState(() {
@@ -52,10 +51,11 @@ class _MyAppState extends State<MyApp> {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: /*isLoggedIn ? const Bottombar() : const*/ SplashScreen(),
+      home: /*isLoggedIn ? const Bottombar() : const*/ const SplashScreen(),
       //home: const WelcomePage(),
       // locale: const Locale('en', ''),
-      locale: controller.initialLang,
+      // locale: controller.initialLang,
+      locale: const Locale('ar', 'SA'),
       fallbackLocale: const Locale('ar', 'SA'),
       translations: MyTranslations(),
       theme: ThemeData(

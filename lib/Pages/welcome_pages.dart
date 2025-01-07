@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/Auth/View/loginPage.dart';
+import 'package:tawsella_final/Auth/View/login_page.dart';
 import 'package:tawsella_final/components/custom_botton.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 
@@ -112,7 +112,7 @@ class _WelcomeScreenState extends State<WelcomeScreens> {
                         width: double.infinity,
                       ),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 15.h),
                     Padding(
                       padding: const EdgeInsets.only(left: 35.0, right: 35, bottom: 0),
                       child: CustomButton(

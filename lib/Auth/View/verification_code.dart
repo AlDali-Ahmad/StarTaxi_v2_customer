@@ -255,7 +255,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tawsella_final/Auth/View/regesterPage.dart';
+import 'package:tawsella_final/Auth/View/regester_page.dart';
 import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 import '../../components/Custom_text.dart';
