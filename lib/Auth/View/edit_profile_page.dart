@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_botton.dart';
+import 'package:tawsella_final/components/custom_password_field.dart';
 import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import 'package:tawsella_final/utils/url.dart';
@@ -13,22 +17,19 @@ import '../../Pages/bottombar.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String userId;
-  EditProfilePage({required this.userId});
+  const EditProfilePage({required this.userId});
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  bool _showPassword = false;
-  bool _showPassword2 = false;
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController password_confirmationController =
-      TextEditingController();
+  // final nameController = TextEditingController();
+  // final phoneController = TextEditingController();
+  // final emailController = TextEditingController();
+  // final passwordController = TextEditingController();
+  // final passwordConfirmationController = TextEditingController();
+  final AuthController authController = Get.put(AuthController());
 
   String name = '';
   String phoneNumber = '';
@@ -41,9 +42,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       email = prefs.getString('email') ?? '';
       phoneNumber = prefs.getString('phone') ?? '';
 
-      emailController.text = email;
-      nameController.text = name;
-      phoneController.text = phoneNumber;
+      authController.emailController.text = email;
+      authController.nameController.text = name;
+      authController.phoneNumberController.text = phoneNumber;
     });
   }
 
@@ -104,83 +105,56 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 height: 30.h,
               ),
               CustomTextField(
-                controller: nameController,
+                controller: authController.nameController,
                 hintText: 'new_name'.tr, // "الاسم الجديد"
                 iconData: Icons.person_2_outlined,
               ),
               SizedBox(height: size.height / 100),
               CustomTextField(
-                controller: phoneController,
-                hintText: 'new_phone_number'.tr, // "رقم الهاتف الجديد"
+                controller:authController. phoneNumberController,
+                hintText: 'new_phone_number'.tr,
                 iconData: Icons.phone_android,
               ),
               SizedBox(height: size.height / 100),
               CustomTextField(
-                controller: emailController,
-                hintText: 'new_email'.tr, // "البريد الإلكتروني الجديد"
+                controller: authController.emailController,
+                hintText: 'new_email'.tr,
                 iconData: Icons.email,
               ),
               SizedBox(height: size.height / 100),
               // Password field
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.black26),
-                  hintText: 'update_password'.tr, // "تحديث كلمة المرور"
-                  prefixIcon: Icon(Icons.lock,color:AppColors.iconColor),
-                  filled: true,
-                  fillColor: AppColors.textField_color,
-                  contentPadding: EdgeInsets.symmetric(vertical: 20.0),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _showPassword = !_showPassword;
-                      });
-                    },
-                    icon: Icon(
-                      _showPassword ? Icons.visibility : Icons.visibility_off,color:AppColors.iconColor
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                obscureText: !_showPassword,
+              CustomPasswordField(
+                controller: authController.passwordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password'.tr;
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters long'.tr;
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: size.height / 100),
-              TextField(
-                controller: password_confirmationController,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.black26),
-                  hintText: 'confirm_password'.tr,
-                  prefixIcon: Icon(Icons.lock,color:AppColors.iconColor),
-                  filled: true,
-                  fillColor: AppColors.textField_color,
-                  contentPadding: EdgeInsets.symmetric(vertical: 20.0),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _showPassword2 = !_showPassword2;
-                      });
-                    },
-                    icon: Icon(
-                      _showPassword2 ? Icons.visibility : Icons.visibility_off,color:AppColors.iconColor
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                obscureText: !_showPassword2,
+              CustomPasswordField(
+                hintText: 'confirm_password'.tr,
+                controller: authController.passwordConfirmationController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your password'.tr;
+                  }
+                  if (value != authController.passwordController.text) {
+                    return 'Passwords do not match'.tr;
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: size.height / 80),
               CustomButton(
                   onPressed: () {
-                    updateProfile();
+                    authController.updateProfile();
                   },
-                  text: 'save_changes'.tr // "حفظ التغييرات"
+                  text: 'save_changes'.tr
                   ),
             ],
           ),
@@ -189,69 +163,66 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  // دالة لتحديث الملف الشخصي
-  void updateProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token') ?? '';
+  // // دالة لتحديث الملف الشخصي
+  // void updateProfile() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var token = prefs.getString('token') ?? '';
 
-    try {
-      // التحقق من ملء جميع الحقول المطلوبة باستثناء كلمة المرور
-      if (emailController.text.isEmpty ||
-          nameController.text.isEmpty ||
-          phoneController.text.isEmpty) {
-        CustomSnackbar.show(
-          context,
-          'fill_all_fields'.tr, // "الرجاء ملئ كامل الحقول"
-        );
-        return;
-      }
+  //   try {
+  //     if (emailController.text.isEmpty ||
+  //         nameController.text.isEmpty ||
+  //         phoneController.text.isEmpty) {
+  //       CustomSnackbar.show(
+  //         context,
+  //         'fill_all_fields'.tr,
+  //       );
+  //       return;
+  //     }
 
-      // التحقق من تطابق كلمتي المرور (إذا كان هناك إدخال لكلمة المرور)
-      if (passwordController.text.isNotEmpty &&
-          passwordController.text != password_confirmationController.text) {
-        CustomSnackbar.show(
-          context,
-          'password_mismatch'.tr, // "كلمة المرور غير متطابقة"
-        );
-        return;
-      }
+  //     if (passwordController.text.isNotEmpty &&
+  //         passwordController.text != passwordConfirmationController.text) {
+  //       CustomSnackbar.show(
+  //         context,
+  //         'password_mismatch'.tr,
+  //       );
+  //       return;
+  //     }
 
-      // إعداد البيانات التي سيتم إرسالها إلى السيرفر
-      Map<String, dynamic> body = {
-        'email': emailController.text,
-        'name': nameController.text,
-        'phone_number': phoneController.text,
-      };
+  //     Map<String, dynamic> body = {
+  //       'email': emailController.text,
+  //       'name': nameController.text,
+  //       'phone_number': phoneController.text,
+  //     };
 
-      // إضافة كلمة المرور فقط إذا كانت غير فارغة
-      if (passwordController.text.isNotEmpty) {
-        body['password'] = passwordController.text;
-        body['password_confirmation'] = password_confirmationController.text;
-      }
+  //     if (passwordController.text.isNotEmpty) {
+  //       body['password'] = passwordController.text;
+  //       body['password_confirmation'] = passwordConfirmationController.text;
+  //     }
 
-      final response = await http.post(
-        Uri.parse('${Url.url}api/profile'),
-        body: jsonEncode(body),
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
-        },
-      );
+  //     final response = await http.post(
+  //       Uri.parse('${Url.url}api/profile'),
+  //       body: jsonEncode(body),
+  //       headers: <String, String>{
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer $token'
+  //       },
+  //     );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // تحديث SharedPreferences بالبيانات الجديدة
-        prefs.setString('name', nameController.text);
-        prefs.setString('email', emailController.text);
-        prefs.setString('phone', phoneController.text);
-        Get.off(() => const Bottombar());
-        print('profile_updated_successfully'.tr); // "تم تحديث الملف الشخصي بنجاح"
-      } else {
-        print('${'profile_update_failed'.tr}: ${response.body}'); // "فشل في تحديث الملف الشخصي"
-      }
-    } catch (e) {
-      print('${'error_updating_profile'.tr}: $e'); // "حدث خطأ أثناء تحديث الملف الشخصي"
-    }
-  }
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       prefs.setString('name', nameController.text);
+  //       prefs.setString('email', emailController.text);
+  //       prefs.setString('phone', phoneController.text);
+  //       Get.off(() => const Bottombar());
+  //       log(
+  //           'profile_updated_successfully'.tr);
+  //     } else {
+  //       log(
+  //           '${'profile_update_failed'.tr}: ${response.body}');
+  //     }
+  //   } catch (e) {
+  //     log(
+  //         '${'error_updating_profile'.tr}: $e'); 
+  //   }
+  // }
 }
-

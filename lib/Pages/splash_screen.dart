@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tawsella_final/Auth/View/verification_code.dart';
+import 'package:tawsella_final/auth/View/verification_code.dart';
 import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/Pages/welcome_pages.dart';
 

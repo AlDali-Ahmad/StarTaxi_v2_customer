@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/Auth/View/login_page.dart';
+import 'package:tawsella_final/auth/View/login_page.dart';
 import 'package:tawsella_final/components/custom_botton.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 

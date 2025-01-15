@@ -5,7 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/Auth/Controller/UserPreferences.dart';
+import 'package:tawsella_final/auth/Controller/UserPreferences.dart';
 import 'package:tawsella_final/NotificationController.dart';
 import 'package:tawsella_final/Pages/notification.dart';
 import 'package:tawsella_final/Pages/pricesPage.dart';

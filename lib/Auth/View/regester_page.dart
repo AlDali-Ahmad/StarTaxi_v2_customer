@@ -5,8 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tawsella_final/Auth/View/login_page.dart';
-import 'package:tawsella_final/Auth/View/verification_code.dart';
+import 'package:tawsella_final/auth/View/login_page.dart';
+import 'package:tawsella_final/auth/View/verification_code.dart';
+import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 import 'package:tawsella_final/components/custom_snackbar.dart';
@@ -32,6 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final phoneNumberController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? genderController;
+  // final AuthController authController = Get.put(AuthController());
   Future<void> registerUser() async {
     final Map<String, dynamic> data = {
       'name': nameController.text,
@@ -42,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'gender': genderController,
     };
 
-    final url = '${Url.url}api/register';
+    final url = 'https://tawsella.online/api/register';
 
     try {
       final response = await http.post(
@@ -177,12 +179,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                       SizedBox(height: size.height / 100),
-                      CustomPhoneField(
-                        controller: phoneNumberController,
-                        onChanged: (phone) {},
-                        onCountryChanged: (country) {},
-                      ),
-                      SizedBox(height: size.height / 100),
                       DropdownButtonFormField<String>(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -206,16 +202,22 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                         onChanged: (value) {
                           setState(() {
-                            genderController = value;
+                            genderController = value??'';
                           });
                         },
                       ),
                       SizedBox(height: size.height / 100),
+                      CustomPhoneField(
+                        controller: phoneNumberController,
+                        onChanged: (phone) {},
+                        onCountryChanged: (country) {},
+                      ),
                       LoadingButtonWidget(
                         text: 'sign_up'.tr,
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
                             registerUser();
+                            // authController.registerUser();
                           }
                         },
                       ),

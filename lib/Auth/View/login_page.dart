@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/Auth/Controller/auth_controller.dart';
-import 'package:tawsella_final/Auth/View/regester_page.dart';
+import 'package:tawsella_final/auth/Controller/auth_controller.dart';
+import 'package:tawsella_final/auth/View/regester_page.dart';
 import 'package:tawsella_final/Pages/bottombar.dart';
+import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 import 'package:tawsella_final/components/custom_snackbar.dart';
@@ -19,23 +20,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
+  // final TextEditingController emailController = TextEditingController();
+  // final TextEditingController passwordController = TextEditingController();
+  final AuthController authController = Get.put(AuthController());
 
-  Future<void> _login() async {
-    
-    final result = await _authService.loginUser(
-      emailController.text,
-      passwordController.text,
-    );
+  // final AuthService _authService = AuthService();
 
-    if (result != null && result.containsKey('error')) {
-      CustomSnackbar.show(context, result['error']);
-    } else {
-      Get.off(() => const Bottombar());
-    }
-  }
+  // Future<void> _login() async {
+
+  //   final result = await _authService.loginUser(
+  //     emailController.text,
+  //     passwordController.text,
+  //   );
+
+  //   if (result != null && result.containsKey('error')) {
+  //     CustomSnackbar.show(context, result['error']);
+  //   } else {
+  //     Get.off(() => const Bottombar());
+  //   }
+  // }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -64,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: size.height / 30),
                       CustomTextField(
-                        controller: emailController,
+                        controller: authController.emailController,
                         hintText: 'enter_your_email'.tr,
                         iconData: Icons.email,
                         iconColor: AppColors.iconColor,
@@ -83,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 12.h),
                       SizedBox(height: 5.h),
                       CustomPasswordField(
-                        controller: passwordController,
+                        controller: authController.passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password'.tr;
@@ -100,7 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                         text: 'login'.tr,
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
-                            _login();
+                            // _login();
+                            authController.loginUser(
+                              authController.emailController.text,
+                              authController.passwordController.text,
+                            );
                           }
                         },
                       ),
