@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/auth/View/login_page.dart';
 import 'package:tawsella_final/auth/View/verification_code.dart';
-import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 import 'package:tawsella_final/components/custom_snackbar.dart';
@@ -31,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final passwordConfirmationController = TextEditingController();
   final phoneNumberController = TextEditingController();
+  final addressController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? genderController;
   // final AuthController authController = Get.put(AuthController());
@@ -42,9 +42,10 @@ class _RegisterPageState extends State<RegisterPage> {
       'password_confirmation': passwordConfirmationController.text,
       'phone_number': phoneNumberController.text,
       'gender': genderController,
+      'address': addressController.text,
     };
 
-    final url = 'https://tawsella.online/api/register';
+    final url = '${Url.url}api/register';
 
     try {
       final response = await http.post(
@@ -122,6 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         alignment: Alignment.center,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
+                        color: AppColors.textColor,
                       ),
                       const SizedBox(height: 15),
                       CustomTextField(
@@ -146,6 +148,18 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                           if (!GetUtils.isEmail(value)) {
                             return 'Please enter a valid email'.tr;
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: size.height / 100),
+                      CustomTextField(
+                        controller: addressController,
+                        hintText: 'مكان اقامتك',
+                        iconData: Icons.location_city,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'الرجاء ادخال مكان اقامتك';
                           }
                           return null;
                         },
@@ -202,7 +216,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                         onChanged: (value) {
                           setState(() {
-                            genderController = value??'';
+                            genderController = value ?? '';
                           });
                         },
                       ),
@@ -229,6 +243,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             text: 'already_have_account'.tr,
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
+                            color: AppColors.textColor,
                           ),
                           TextButton(
                             onPressed: () {
