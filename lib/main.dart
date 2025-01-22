@@ -1,15 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/NotificationController.dart';
 import 'package:tawsella_final/Pages/splash_screen.dart';
+import 'package:tawsella_final/firebase_options.dart';
 import 'package:tawsella_final/local/translations.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
+import 'package:tawsella_final/utils/services/notification_service.dart';
 
 SharedPreferences? sharepref;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  NotificationService().initialize();
   sharepref = await SharedPreferences.getInstance();
   Get.put(NotificationController());
   runApp(
