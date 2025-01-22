@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/auth/View/regester_page.dart';
 import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
+import 'package:tawsella_final/utils/url.dart';
 import '../../components/Custom_text.dart';
 import '../../utils/app_colors.dart';
 
@@ -53,7 +54,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       log("Token is null, please check if it's retrieved correctly.");
       return;
     }
-    String apiUrl = 'http://10.0.2.2:8000/api/verify-mail';
+    String apiUrl = '${Url.url}api/verify-mail';
 
     // Ensure the pin code consists of 6 digits
     if (_pinCode.length != 6) {
@@ -148,7 +149,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       CustomText(
                         text: email!,
                         fontSize: 15,
-                        color: AppColors.green1,
+                        color: AppColors.orange1,
                       ),
                     ],
                   ),
@@ -177,7 +178,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           'signUp'.tr,
                           style: const TextStyle(
                             fontSize: 14,
-                            color: AppColors.green1,
+                            color: AppColors.orange1,
                             decoration: TextDecoration.underline,
                             decorationThickness: 1,
                             fontWeight: FontWeight.bold,

@@ -185,13 +185,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                 const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: CustomText(
-                      text: 'Copyright All right reserved'.tr,
+                      text: '© 2025 جميع الحقوق محفوظة. شركة SkyLine.',
                       alignment: Alignment.center,
                       fontSize: 12,
-                      color: AppColors.white),
+                    ),
                 ),
               ],
             ),

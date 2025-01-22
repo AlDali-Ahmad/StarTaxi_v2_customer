@@ -105,18 +105,19 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         backgroundColor: AppColors.BackgroundColor,
         title: Text(
           'Order Details'.tr,
-          style: const TextStyle(color: Colors.amber),
+          // style: const TextStyle(color: Colors.amber),
         ),
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
-        ),
+        centerTitle: true,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Get.back();
+        //   },
+        //   icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+        // ),
       ),
       body: Obx(() {
         if (isLoading.value) {
