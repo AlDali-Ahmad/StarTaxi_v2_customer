@@ -100,7 +100,7 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
                   )
                 : const Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.orange1),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.blue1),
                     ),
                   )
             : ListView.builder(
@@ -120,7 +120,7 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.orange1,
+                          color: AppColors.blue1,
                         ),
                       ),
                       subtitle: Text(

@@ -1,19 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_botton.dart';
 import 'package:tawsella_final/components/custom_password_field.dart';
-import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
-import 'package:tawsella_final/utils/url.dart';
-import '../../Pages/bottombar.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String userId;
@@ -68,7 +61,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+          icon: const Icon(Icons.arrow_back, color: AppColors.blue1),
         ),
       ),
       body: SingleChildScrollView(
@@ -111,7 +104,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               SizedBox(height: size.height / 100),
               CustomTextField(
-                controller:authController. phoneNumberController,
+                controller: authController.phoneNumberController,
                 hintText: 'new_phone_number'.tr,
                 iconData: Icons.phone_android,
               ),
@@ -154,75 +147,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   onPressed: () {
                     authController.updateProfile();
                   },
-                  text: 'save_changes'.tr
-                  ),
+                  text: 'save_changes'.tr),
             ],
           ),
         ),
       ),
     );
   }
-
-  // // دالة لتحديث الملف الشخصي
-  // void updateProfile() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var token = prefs.getString('token') ?? '';
-
-  //   try {
-  //     if (emailController.text.isEmpty ||
-  //         nameController.text.isEmpty ||
-  //         phoneController.text.isEmpty) {
-  //       CustomSnackbar.show(
-  //         context,
-  //         'fill_all_fields'.tr,
-  //       );
-  //       return;
-  //     }
-
-  //     if (passwordController.text.isNotEmpty &&
-  //         passwordController.text != passwordConfirmationController.text) {
-  //       CustomSnackbar.show(
-  //         context,
-  //         'password_mismatch'.tr,
-  //       );
-  //       return;
-  //     }
-
-  //     Map<String, dynamic> body = {
-  //       'email': emailController.text,
-  //       'name': nameController.text,
-  //       'phone_number': phoneController.text,
-  //     };
-
-  //     if (passwordController.text.isNotEmpty) {
-  //       body['password'] = passwordController.text;
-  //       body['password_confirmation'] = passwordConfirmationController.text;
-  //     }
-
-  //     final response = await http.post(
-  //       Uri.parse('${Url.url}api/profile'),
-  //       body: jsonEncode(body),
-  //       headers: <String, String>{
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token'
-  //       },
-  //     );
-
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       prefs.setString('name', nameController.text);
-  //       prefs.setString('email', emailController.text);
-  //       prefs.setString('phone', phoneController.text);
-  //       Get.off(() => const Bottombar());
-  //       log(
-  //           'profile_updated_successfully'.tr);
-  //     } else {
-  //       log(
-  //           '${'profile_update_failed'.tr}: ${response.body}');
-  //     }
-  //   } catch (e) {
-  //     log(
-  //         '${'error_updating_profile'.tr}: $e'); 
-  //   }
-  // }
 }

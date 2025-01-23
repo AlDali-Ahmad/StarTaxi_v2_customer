@@ -32,9 +32,9 @@ class LoadingButtonWidget extends StatefulWidget {
     this.fontSize = 16.0,
     this.textColor = AppColors.white,
     this.lodingColor = AppColors.white,
-    this.backgroundColor1 = AppColors.orange2,
-    this.backgroundColor2 = AppColors.orange1,
-    this.borderColor = AppColors.orange2,
+    this.backgroundColor1 = AppColors.blue2,
+    this.backgroundColor2 = AppColors.blue1,
+    this.borderColor = AppColors.blue2,
     this.fontWeight = FontWeight.bold,
   });
 

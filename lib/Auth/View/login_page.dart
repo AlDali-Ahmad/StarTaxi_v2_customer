@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/auth/Controller/auth_controller.dart';
 import 'package:tawsella_final/auth/View/regester_page.dart';
-import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
-import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import '../../components/custom_password_field.dart';
 import '../../components/custom_text.dart';

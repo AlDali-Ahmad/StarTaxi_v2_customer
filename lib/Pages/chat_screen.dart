@@ -80,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: AppColors.orange1,
+            color: AppColors.blue1,
           ),
           onPressed: () {
             Navigator.pop(context);

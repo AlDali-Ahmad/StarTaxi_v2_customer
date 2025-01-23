@@ -123,7 +123,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
         if (isLoading.value) {
           return const Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.orange1),
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.blue1),
             ),
           );
         }
@@ -157,7 +157,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: AppColors.orange1,
+                        color: AppColors.blue1,
                       ),
                     ),
                     Text(
@@ -176,7 +176,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           },
                           child: Text(
                             'Order Cancel'.tr,
-                            style: const TextStyle(color: AppColors.orange2),
+                            style: const TextStyle(color: AppColors.blue2),
                           ),
                         ),
                         const Spacer(),
@@ -186,7 +186,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           },
                           child: Text(
                             'Go To Chat'.tr,
-                            style: const TextStyle(color: AppColors.orange2),
+                            style: const TextStyle(color: AppColors.blue2),
                           ),
                         ),
                       ],

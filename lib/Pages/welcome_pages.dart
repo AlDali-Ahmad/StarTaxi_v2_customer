@@ -120,8 +120,8 @@ class _WelcomeScreenState extends State<WelcomeScreens> {
                         background_color2: AppColors.white,
                         onPressed: _skip,
                         text: 'skip'.tr,
-                        textColor: AppColors.orange2,
-                        border_color: AppColors.orange2,
+                        textColor: AppColors.blue2,
+                        border_color: AppColors.blue2,
                         width: double.infinity,
                       ),
                     ),
@@ -142,7 +142,7 @@ class _WelcomeScreenState extends State<WelcomeScreens> {
       height: 10,
       width: _currentPage == index ? 20 : 10,
       decoration: BoxDecoration(
-        color: _currentPage == index ? AppColors.orange1 : Colors.grey,
+        color: _currentPage == index ? AppColors.blue1 : Colors.grey,
         borderRadius: BorderRadius.circular(5),
       ),
     );

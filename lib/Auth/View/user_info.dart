@@ -25,7 +25,7 @@ class UserInfoPage extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+          icon: const Icon(Icons.arrow_back, color: AppColors.blue1),
         ),
       ),
       body: Center(

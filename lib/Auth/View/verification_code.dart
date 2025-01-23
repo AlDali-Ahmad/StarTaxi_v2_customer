@@ -149,7 +149,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       CustomText(
                         text: email!,
                         fontSize: 15,
-                        color: AppColors.orange1,
+                        color: AppColors.blue1,
                       ),
                     ],
                   ),
@@ -178,7 +178,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           'signUp'.tr,
                           style: const TextStyle(
                             fontSize: 14,
-                            color: AppColors.orange1,
+                            color: AppColors.blue1,
                             decoration: TextDecoration.underline,
                             decorationThickness: 1,
                             fontWeight: FontWeight.bold,
@@ -193,8 +193,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     onPressed: () {
                       verifyEmail();
                     },
-                    backgroundColor1: AppColors.orange1,
-                    backgroundColor2: AppColors.orange2,
+                    backgroundColor1: AppColors.blue1,
+                    backgroundColor2: AppColors.blue2,
                   ),
                 ],
               ),

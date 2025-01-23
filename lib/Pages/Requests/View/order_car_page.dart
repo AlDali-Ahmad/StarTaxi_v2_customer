@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:tawsella_final/Pages/Requests/Controller/order_car_controller.dart';
+import 'package:tawsella_final/Pages/requests/Controller/order_car_controller.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 import 'package:tawsella_final/components/custom_text.dart';
@@ -251,7 +251,7 @@ class OrderCarPage extends StatelessWidget {
   Widget _buildSubmitButton(Size size, OrderCarController controller) {
     return LoadingButtonWidget(
       onPressed: () {
-        if (controller.token.value != null && controller.token.value.isNotEmpty) {
+        if (controller.token.value.isNotEmpty) {
           controller.sendLocationToDatabase();
         } else {
           Get.snackbar('Error', 'تأكد من تسجيل الدخول أولاً');

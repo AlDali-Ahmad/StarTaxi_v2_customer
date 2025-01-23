@@ -10,7 +10,7 @@ import 'package:tawsella_final/NotificationController.dart';
 import 'package:tawsella_final/Pages/notification.dart';
 import 'package:tawsella_final/Pages/pricesPage.dart';
 import 'package:tawsella_final/Pages/profile.dart';
-import 'package:tawsella_final/Pages/Requests/View/requestsPage.dart';
+import 'package:tawsella_final/Pages/requests/View/requests_page.dart';
 import 'package:tawsella_final/components/custom_text.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -235,8 +235,8 @@ class _BottombarState extends State<Bottombar> {
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.orange1,
-                        AppColors.orange1,
+                        AppColors.blue1,
+                        AppColors.blue1,
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -287,13 +287,13 @@ class _BottombarState extends State<Bottombar> {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: currentIndex == 0
-                          ? AppColors.orange1
+                          ? AppColors.blue1
                           : AppColors.iconColor,
                     ),
                   ],
                 ),
                 color:
-                    currentIndex == 0 ? AppColors.orange1 : AppColors.iconColor,
+                    currentIndex == 0 ? AppColors.blue1 : AppColors.iconColor,
                 onPressed: () {
                   setState(() {
                     currentIndex = 0;
@@ -310,13 +310,13 @@ class _BottombarState extends State<Bottombar> {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: currentIndex == 1
-                          ? AppColors.orange1
+                          ? AppColors.blue1
                           : AppColors.iconColor,
                     ),
                   ],
                 ),
                 color:
-                    currentIndex == 1 ? AppColors.orange1 : AppColors.iconColor,
+                    currentIndex == 1 ? AppColors.blue1 : AppColors.iconColor,
                 onPressed: () {
                   setState(() {
                     currentIndex = 1;
@@ -334,13 +334,13 @@ class _BottombarState extends State<Bottombar> {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: currentIndex == 2
-                          ? AppColors.orange1
+                          ? AppColors.blue1
                           : AppColors.iconColor,
                     ),
                   ],
                 ),
                 color:
-                    currentIndex == 2 ? AppColors.orange1 : AppColors.iconColor,
+                    currentIndex == 2 ? AppColors.blue1 : AppColors.iconColor,
                 onPressed: () {
                   setState(() {
                     currentIndex = 2;
@@ -357,13 +357,13 @@ class _BottombarState extends State<Bottombar> {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: currentIndex == 3
-                          ? AppColors.orange1
+                          ? AppColors.blue1
                           : AppColors.iconColor,
                     ),
                   ],
                 ),
                 color:
-                    currentIndex == 3 ? AppColors.orange1 : AppColors.iconColor,
+                    currentIndex == 3 ? AppColors.blue1 : AppColors.iconColor,
                 onPressed: () {
                   setState(() {
                     currentIndex = 3;

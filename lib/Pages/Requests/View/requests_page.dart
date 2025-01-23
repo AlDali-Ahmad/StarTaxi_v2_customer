@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/Pages/Requests/View/order_car_page.dart';
-import 'package:tawsella_final/Pages/Requests/View/timerorderCar.dart';
+import 'package:tawsella_final/Pages/requests/View/order_car_page.dart';
+import 'package:tawsella_final/Pages/requests/View/time_order_car.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 
 import 'package:tawsella_final/utils/app_colors.dart';
@@ -70,8 +70,8 @@ class _RequestsState extends State<Requests> {
                       lodingColor: AppColors.textColor,
                       backgroundColor1: AppColors.white,
                       backgroundColor2: AppColors.white,
-                      textColor: AppColors.orange2,
-                      borderColor: AppColors.orange2,
+                      textColor: AppColors.blue2,
+                      borderColor: AppColors.blue2,
                     ),
                     SizedBox(height: 10.h),
                   ],

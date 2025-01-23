@@ -115,7 +115,7 @@ class CustomAlertDialog extends StatelessWidget {
                   height: 38.h,
                   width: 120.w,
                   child: CustomButton(
-                    textColor: AppColors.orange2,
+                    textColor: AppColors.blue2,
                     background_color1: AppColors.nullColor,
                     background_color2: AppColors.nullColor,
                     onPressed: onCancel,

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/auth/controller/UserPreferences.dart';
+import 'package:tawsella_final/auth/controller/user_preferences.dart';
 import 'package:tawsella_final/auth/controller/auth_controller.dart';
 import 'package:tawsella_final/auth/View/user_info.dart';
 import 'package:tawsella_final/auth/View/verification_code.dart';
