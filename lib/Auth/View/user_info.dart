@@ -18,14 +18,7 @@ class UserInfoPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.BackgroundColor,
         title: Text(
-          'userProfilePage'.tr, 
-          style: const TextStyle(color: Colors.amber),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back, color: AppColors.blue1),
+          'userProfilePage'.tr,
         ),
       ),
       body: Center(
@@ -82,13 +75,13 @@ class UserInfoPage extends StatelessWidget {
                                 userData['avatar'] != null &&
                                         userData['avatar'].isNotEmpty
                                     ? '${Url.url}${userData['avatar']}'
-                                    : 'assets/images/car1.png', 
-                                height: 110.h,
-                                width: 120.w,
+                                    : 'assets/images/logo_star_taxi.png',
+                                // height: 110.h,
+                                // width: 120.w,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
-                                    'assets/images/car1.png',
+                                    'assets/images/logo_star_taxi.png',
                                   );
                                 },
                               ),
@@ -113,7 +106,7 @@ class UserInfoPage extends StatelessWidget {
                           readOnly: true,
                         ),
                         const SizedBox(height: 20),
-                        CustomText(text: 'phoneNumber'.tr), 
+                        CustomText(text: 'phoneNumber'.tr),
                         SizedBox(height: 3.h),
                         TextFormField(
                           decoration: InputDecoration(
@@ -153,12 +146,12 @@ class UserInfoPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     LoadingButtonWidget(
                       onPressed: () {
-                        Get.to(() => EditProfilePage(userId: '${userData['id']}'));
+                        Get.to(
+                            () => EditProfilePage(userId: '${userData['id']}'));
                       },
                       text: 'updateUserInfo'.tr,
                     ),
                     const SizedBox(height: 20),
-                    
                   ],
                 ),
               );

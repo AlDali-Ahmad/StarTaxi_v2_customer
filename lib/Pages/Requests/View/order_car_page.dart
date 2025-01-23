@@ -4,13 +4,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tawsella_final/Pages/requests/Controller/order_car_controller.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
+import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/components/custom_text.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 
-class OrderCarPage extends StatelessWidget {
-  final OrderCarController controller = Get.put(OrderCarController());
+class OrderCarPage extends StatefulWidget {
+  const OrderCarPage({super.key});
 
-  OrderCarPage({Key? key}) : super(key: key);
+  @override
+  State<OrderCarPage> createState() => _OrderCarPageState();
+}
+
+class _OrderCarPageState extends State<OrderCarPage> {
+  final OrderCarController controller = Get.put(OrderCarController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,8 @@ class OrderCarPage extends StatelessWidget {
                         controller.markers.removeLast();
                       }
                       controller.markers.add(Marker(
-                        markerId: MarkerId("selected_location_${controller.markers.length}"),
+                        markerId: MarkerId(
+                            "selected_location_${controller.markers.length}"),
                         position: LatLng(latLng.latitude, latLng.longitude),
                       ));
                     },
@@ -53,6 +60,7 @@ class OrderCarPage extends StatelessWidget {
                   )),
             ),
             Container(
+              
               decoration: const BoxDecoration(
                 color: AppColors.textColor,
                 borderRadius: BorderRadius.only(
@@ -70,9 +78,9 @@ class OrderCarPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     _buildRequestTypeAndGenderFields(controller),
                     const SizedBox(height: 20),
-                    _buildSubmitButton(size, controller),
+                    _buildShowRouteButton(controller, context),
                     const SizedBox(height: 10),
-                    _buildShowRouteButton(controller),
+                    _buildSubmitButton(size, controller),
                   ],
                 ),
               ),
@@ -173,7 +181,7 @@ class OrderCarPage extends StatelessWidget {
             controller.selectedRequestType.value = value;
           }
         },
-        decoration: _buildDropdownDecoration('Select the request type'.tr),
+        decoration: _buildDropdownDecoration(''),
       ),
     );
   }
@@ -262,24 +270,30 @@ class OrderCarPage extends StatelessWidget {
     );
   }
 
-  Widget _buildShowRouteButton(OrderCarController controller) {
+  Widget _buildShowRouteButton(
+      OrderCarController controller, BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
         if (controller.markers.length >= 2) {
           LatLng origin = controller.markers[0].position;
           LatLng destination = controller.markers[1].position;
           await controller.getDirections(origin, destination);
+          CustomSnackbar.show(
+            context,
+            'المسافة المقدرة: ${controller.distance.value.toStringAsFixed(2)} km',
+            backgroundColor: AppColors.primaryColor,
+            textColor: Colors.white,
+            duration: const Duration(seconds: 3),
+          );
+        } else {
           Get.snackbar(
-            'Distance',
-            'Estimated distance: ${controller.distance.value.toStringAsFixed(2)} km',
+            'خطأ',
+            'الرجاء تحديد كل من موقعك الحالي والوجهة',
             snackPosition: SnackPosition.BOTTOM,
           );
-          
-        } else {
-          Get.snackbar('Error', 'Please select both origin and destination');
         }
       },
-      child: const Text('Show Route'),
+      child: const Text('عرض معلومات الرحلة'),
     );
   }
 }

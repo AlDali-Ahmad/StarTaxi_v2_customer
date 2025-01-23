@@ -15,7 +15,7 @@ import 'package:tawsella_final/utils/url.dart';
 class OrderCarController extends GetxController {
   GoogleMapController? mapController;
   final RxList<Marker> markers = <Marker>[].obs; // ماركرز الخريطة
-  final RxList<LatLng> polylineCoordinates = <LatLng>[].obs; // نقاط المسار
+  RxList<LatLng> polylineCoordinates = <LatLng>[].obs;
   final RxDouble distance = 0.0.obs; // المسافة المقدرة
 
   final CameraPosition initialCameraPosition = const CameraPosition(
@@ -56,7 +56,8 @@ class OrderCarController extends GetxController {
       }
     }
 
-    if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
       Position position = await Geolocator.getCurrentPosition();
       _updateMarkers(position); // تحديث الماركرز
       _moveCameraToPosition(position); // تحريك الكاميرا إلى الموقع الحالي
@@ -81,18 +82,22 @@ class OrderCarController extends GetxController {
   // الحصول على التوكن من SharedPreferences
   Future<void> _getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    token.value = prefs.getString('token') ?? ''; // استخدام قيمة افتراضية إذا كانت null
+    token.value =
+        prefs.getString('token') ?? ''; // استخدام قيمة افتراضية إذا كانت null
   }
 
   // إرسال بيانات الموقع إلى قاعدة البيانات
   Future<void> sendLocationToDatabase() async {
-    if (locationController.text.isEmpty || destinationController.text.isEmpty || gender.value.isEmpty) {
+    if (locationController.text.isEmpty ||
+        destinationController.text.isEmpty ||
+        gender.value.isEmpty) {
       Get.snackbar('Error', 'الرجاء ملئ كامل الحقول');
       return;
     }
 
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
       Map<String, dynamic> payload = {
         'movement_type_id': selectedRequestType.value,
@@ -157,17 +162,18 @@ class OrderCarController extends GetxController {
         final data = jsonDecode(response.body);
         if (data['status'] == 'OK') {
           // استخراج المسافة
-          distance.value = data['routes'][0]['legs'][0]['distance']['value'] / 1000; // المسافة بالكيلومترات
+          distance.value =
+              data['routes'][0]['legs'][0]['distance']['value'] / 1000;
 
           // استخراج نقاط المسار
           List<PointLatLng> points = PolylinePoints()
               .decodePolyline(data['routes'][0]['overview_polyline']['points']);
-          polylineCoordinates.clear();
-          for (var point in points) {
-            polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-          }
+          polylineCoordinates.assignAll(points
+              .map((point) => LatLng(point.latitude, point.longitude))
+              .toList());
         } else {
-          Get.snackbar('Error', 'Failed to fetch directions: ${data['status']}');
+          Get.snackbar(
+              'Error', 'Failed to fetch directions: ${data['status']}');
         }
       } else {
         Get.snackbar('Error', 'Failed to fetch directions');

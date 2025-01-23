@@ -28,7 +28,7 @@ class LoadingButtonWidget extends StatefulWidget {
     required this.onPressed,
     this.height,
     this.width,
-    this.borderRadius = 10.0,
+    this.borderRadius = 20.0,
     this.fontSize = 16.0,
     this.textColor = AppColors.white,
     this.lodingColor = AppColors.white,
