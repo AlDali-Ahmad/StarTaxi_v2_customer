@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   static final FirebaseMessaging _firebaseMessaging =
@@ -132,7 +133,10 @@ class NotificationService {
 
   // Get the device token for push notifications
   Future<void> _getDeviceToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     String? token = await _firebaseMessaging.getToken();
+    prefs.setString('device_token', token!);
     print('Device Token: $token');
   }
 }
