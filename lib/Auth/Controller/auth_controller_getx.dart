@@ -9,7 +9,6 @@ import 'package:tawsella_final/auth/view/verification_code.dart';
 import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/utils/url.dart';
 
-
 class AuthController extends GetxController {
   // تعريف المتغيرات
   var nameController = TextEditingController();
@@ -17,10 +16,12 @@ class AuthController extends GetxController {
   var passwordController = TextEditingController();
   var passwordConfirmationController = TextEditingController();
   var phoneNumberController = TextEditingController();
-  String genderController = ""; 
+  String genderController = "";
 
   // دالة التسجيل
   Future<void> registerUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? devicetoken = prefs.getString('device_token');
     final Map<String, dynamic> data = {
       'name': nameController.text,
       'email': emailController.text,
@@ -28,7 +29,9 @@ class AuthController extends GetxController {
       'password_confirmation': passwordConfirmationController.text,
       'phone_number': phoneNumberController.text,
       'gender': genderController,
+      'device_token': devicetoken ?? '',
     };
+    print(data);
 
     final url = '${Url.url}api/register'; // تأكد من أن لديك `Url.url`
 
@@ -62,7 +65,6 @@ class AuthController extends GetxController {
             responseData['data']['user']['mail_code_verified_at'] ?? "a";
 
         // تخزين البيانات في SharedPreferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
         prefs.setString('id', id);
         prefs.setString('name', name);
@@ -84,11 +86,14 @@ class AuthController extends GetxController {
 
   // دالة تسجيل الدخول
   Future<Map<String, dynamic>?> loginUser(String email, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? devicetoken = prefs.getString('device_token');
     final Map<String, dynamic> data = {
       'email': email,
       'password': password,
+      'device_token': devicetoken ?? '',
     };
-
+    print(data);
     try {
       final response = await http.post(
         Uri.parse('${Url.url}api/login'), // تأكد من تحديد الرابط الصحيح
@@ -105,7 +110,8 @@ class AuthController extends GetxController {
         final String id = responseData['data']['user']['id'];
         final String email = responseData['data']['user']['email'];
         final String name = responseData['data']['user']['profile']['name'];
-        final String phone = responseData['data']['user']['profile']['phone_number'];
+        final String phone =
+            responseData['data']['user']['profile']['phone_number'];
         final String currentEmail = responseData['data']['user']['email'];
         final String mail_code_verified_at =
             responseData['data']['user']['mail_code_verified_at'];
@@ -137,7 +143,7 @@ class AuthController extends GetxController {
     }
   }
 
-    // دالة لتحديث الملف الشخصي
+  // دالة لتحديث الملف الشخصي
   void updateProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token') ?? '';
@@ -188,15 +194,12 @@ class AuthController extends GetxController {
         prefs.setString('email', emailController.text);
         prefs.setString('phone', phoneNumberController.text);
         Get.off(() => const Bottombar());
-        log(
-            'profile_updated_successfully'.tr);
+        log('profile_updated_successfully'.tr);
       } else {
-        log(
-            '${'profile_update_failed'.tr}: ${response.body}');
+        log('${'profile_update_failed'.tr}: ${response.body}');
       }
     } catch (e) {
-      log(
-          '${'error_updating_profile'.tr}: $e'); 
+      log('${'error_updating_profile'.tr}: $e');
     }
   }
 }
