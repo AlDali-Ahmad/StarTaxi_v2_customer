@@ -96,7 +96,7 @@ class AuthController extends GetxController {
     print(data);
     try {
       final response = await http.post(
-        Uri.parse('${Url.url}api/login'), // تأكد من تحديد الرابط الصحيح
+        Uri.parse('${Url.url}api/login'), 
         body: jsonEncode(data),
         headers: {
           'Content-Type': 'application/json',

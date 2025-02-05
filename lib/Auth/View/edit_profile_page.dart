@@ -1,19 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_botton.dart';
 import 'package:tawsella_final/components/custom_password_field.dart';
-import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
-import 'package:tawsella_final/utils/url.dart';
-import '../../Pages/bottombar.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String userId;
@@ -111,7 +104,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               SizedBox(height: size.height / 100),
               CustomTextField(
-                controller:authController. phoneNumberController,
+                controller: authController.phoneNumberController,
                 hintText: 'new_phone_number'.tr,
                 iconData: Icons.phone_android,
               ),
@@ -154,8 +147,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   onPressed: () {
                     authController.updateProfile();
                   },
-                  text: 'save_changes'.tr
-                  ),
+                  text: 'save_changes'.tr),
             ],
           ),
         ),
@@ -222,7 +214,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   //     }
   //   } catch (e) {
   //     log(
-  //         '${'error_updating_profile'.tr}: $e'); 
+  //         '${'error_updating_profile'.tr}: $e');
   //   }
   // }
 }

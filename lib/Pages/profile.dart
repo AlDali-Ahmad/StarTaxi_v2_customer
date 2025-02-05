@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: 'Copyright All right reserved'.tr,
                       alignment: Alignment.center,
                       fontSize: 12,
-                      color: AppColors.white),
+                    ),
                 ),
               ],
             ),
