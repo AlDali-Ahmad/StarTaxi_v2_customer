@@ -94,7 +94,7 @@ class _WelcomeScreenState extends State<WelcomeScreens> {
                               text,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
-                                color: Colors.white,
+                                // color: Colors.white,
                                 fontSize: 18,
                               ),
                             ),

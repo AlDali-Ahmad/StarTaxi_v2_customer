@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tawsella_final/utils/app_colors.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
@@ -12,7 +13,7 @@ class CustomText extends StatelessWidget {
   const CustomText({
     this.text = '',
     this.fontSize = 17,
-    this.color = Colors.white,
+    this.color = AppColors.textColor,
     this.fontWeight = FontWeight.normal,
     this.alignment = Alignment.topLeft,
     this.fontFamily = 'Cairo',

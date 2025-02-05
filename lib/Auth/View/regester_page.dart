@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -107,17 +106,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 200.w,
-                        height: 100.h,
-                        child: Image.asset('assets/images/c.png'),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Image.asset("assets/images/logo_star_taxi.png",),
                       ),
-                      SizedBox(height: 10.h),
-                      SizedBox(
-                        width: 120.w,
-                        child: Image.asset('assets/images/Tawsella.png'),
-                      ),
-                      SizedBox(height: 10.h),
                       CustomText(
                         text: 'register_page'.tr,
                         alignment: Alignment.center,

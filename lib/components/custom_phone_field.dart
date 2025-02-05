@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:tawsella_final/utils/app_colors.dart';
 
 class CustomPhoneField extends StatefulWidget {
   final TextEditingController controller;
@@ -38,7 +39,7 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
       child: IntlPhoneField(
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.grey.shade200,
+          fillColor: AppColors.textField_color,
           border: InputBorder.none,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/auth/Controller/auth_controller.dart';
 import 'package:tawsella_final/auth/View/regester_page.dart';
-import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/auth/controller/auth_controller_getx.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
-import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import '../../components/custom_password_field.dart';
 import '../../components/custom_text.dart';
@@ -57,12 +54,15 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/car1.png", height: 70.h),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Image.asset("assets/images/logo_star_taxi.png",),
+                      ),
                       CustomText(
                         text: 'login_page'.tr,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.iconColor,
+                        // color: AppColors.iconColor,
                         alignment: Alignment.center,
                       ),
                       SizedBox(height: size.height / 30),
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           CustomText(
                             text: "dont_have_account".tr,
-                            color: AppColors.white,
+                            // color: AppColors.white,
                             fontSize: 14,
                           ),
                           GestureDetector(
