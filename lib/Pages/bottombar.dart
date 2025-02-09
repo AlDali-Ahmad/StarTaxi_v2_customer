@@ -1,20 +1,20 @@
-import 'dart:convert';
-import 'dart:developer';
+// import 'dart:convert';
+// import 'dart:developer';
 
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tawsella_final/auth/Controller/UserPreferences.dart';
-import 'package:tawsella_final/NotificationController.dart';
+// import 'package:tawsella_final/auth/Controller/UserPreferences.dart';
+// import 'package:tawsella_final/NotificationController.dart';
 import 'package:tawsella_final/Pages/notification.dart';
 import 'package:tawsella_final/Pages/pricesPage.dart';
 import 'package:tawsella_final/Pages/profile.dart';
 import 'package:tawsella_final/Pages/Requests/View/requestsPage.dart';
 import 'package:tawsella_final/components/custom_text.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:http/http.dart' as http;
+// import 'package:web_socket_channel/web_socket_channel.dart';
+// import 'package:http/http.dart' as http;
 
 class Bottombar extends StatefulWidget {
   const Bottombar({Key? key}) : super(key: key);
@@ -24,169 +24,169 @@ class Bottombar extends StatefulWidget {
 }
 
 class _BottombarState extends State<Bottombar> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  void playNotificationSound() async {
-    try {
-      await _audioPlayer.setSource(AssetSource('sound/notification.mp3'));
-      await _audioPlayer.resume();
-    } catch (e) {
-      log('Error playing sound: $e');
-    }
-  }
+  // final AudioPlayer _audioPlayer = AudioPlayer();
+  // void playNotificationSound() async {
+  //   try {
+  //     await _audioPlayer.setSource(AssetSource('sound/notification.mp3'));
+  //     await _audioPlayer.resume();
+  //   } catch (e) {
+  //     log('Error playing sound: $e');
+  //   }
+  // }
 
   int currentIndex = 0;
 
-  late WebSocketChannel _channel;
-  String? id;
-  String? _token;
-  List<String> notifications = [];
-  int _reconnectAttempts = 0;
-  final int _maxReconnectAttempts =
-      5; // Limit for the number of reconnect attempts
-  final Duration _reconnectDelay =
-      const Duration(seconds: 5); // Delay before reconnecting
+  // late WebSocketChannel _channel;
+  // String? id;
+  // String? _token;
+  // List<String> notifications = [];
+  // int _reconnectAttempts = 0;
+  // final int _maxReconnectAttempts =
+  //     5; // Limit for the number of reconnect attempts
+  // final Duration _reconnectDelay =
+  //     const Duration(seconds: 5); // Delay before reconnecting
 
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   loadUserData();
+  // }
 
-  Future<void> loadUserData() async {
-    Map<String, String?> userInfo = await UserPreferences.getUserInfo();
+  // Future<void> loadUserData() async {
+  //   Map<String, String?> userInfo = await UserPreferences.getUserInfo();
 
-    setState(() {
-      id = userInfo['id'];
-      _token = userInfo['token'];
-      if (id != null && _token != null) {
-        _connectToWebSocket();
-      } else {
-        log('Failed to load user data: id or token is null');
-      }
-    });
-  }
+  //   setState(() {
+  //     id = userInfo['id'];
+  //     _token = userInfo['token'];
+  //     if (id != null && _token != null) {
+  //       _connectToWebSocket();
+  //     } else {
+  //       log('Failed to load user data: id or token is null');
+  //     }
+  //   });
+  // }
 
-  void _connectToWebSocket() {
-    _reconnectAttempts = 0; // Reset the reconnect attempts
-    _channel = WebSocketChannel.connect(
-      Uri.parse(
-        'ws://10.0.2.2:8080/app/ni31bwqnyb4g9pbkk7sn?protocol=7&client=js&version=4.3.1',
-      ),
-    );
+  // void _connectToWebSocket() {
+  //   _reconnectAttempts = 0; // Reset the reconnect attempts
+  //   _channel = WebSocketChannel.connect(
+  //     Uri.parse(
+  //       'ws://10.0.2.2:8080/app/ni31bwqnyb4g9pbkk7sn?protocol=7&client=js&version=4.3.1',
+  //     ),
+  //   );
 
-    _channel.stream.listen(
-      (event) async {
-        log('Received event: $event');
-        if (event.contains('connection_established')) {
-          final decodedEvent = jsonDecode(event);
-          final decodeData = jsonDecode(decodedEvent['data']);
-          final socketId = decodeData['socket_id'];
-          log('Socket ID: $socketId'); 
+  //   _channel.stream.listen(
+  //     (event) async {
+  //       log('Received event: $event');
+  //       if (event.contains('connection_established')) {
+  //         final decodedEvent = jsonDecode(event);
+  //         final decodeData = jsonDecode(decodedEvent['data']);
+  //         final socketId = decodeData['socket_id'];
+  //         log('Socket ID: $socketId');
 
-          const authUrl = 'http://10.0.2.2:8000/api/broadcasting/auth';
-          final authResponse = await http.post(
-            Uri.parse(authUrl),
-            headers: {
-              'Authorization': 'Bearer $_token',
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode(
-              {'channel_name': 'customer.${id}', 'socket_id': socketId},
-            ),
-          );
+  //         const authUrl = 'http://10.0.2.2:8000/api/broadcasting/auth';
+  //         final authResponse = await http.post(
+  //           Uri.parse(authUrl),
+  //           headers: {
+  //             'Authorization': 'Bearer $_token',
+  //             'Accept': 'application/json',
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: jsonEncode(
+  //             {'channel_name': 'customer.${id}', 'socket_id': socketId},
+  //           ),
+  //         );
 
-          if (authResponse.statusCode == 200) {
-            final authData = jsonDecode(authResponse.body);
-            log('Auth data: $authData');
-            _channel.sink.add(jsonEncode({
-              "event": "pusher:subscribe",
-              "data": {
-                "channel": "customer.${id}",
-                "auth": authData['auth'].toString(),
-              },
-            }));
-          } else {
-            log('Failed to authenticate: ${authResponse.body}');
-          }
-        }
-        try {
-          final decodedEvent = jsonDecode(event);
-          log('Decoded event: $decodedEvent');
-          if (decodedEvent is Map<String, dynamic>) {
-            log('Decoded event:222 $decodedEvent');
+  //         if (authResponse.statusCode == 200) {
+  //           final authData = jsonDecode(authResponse.body);
+  //           log('Auth data: $authData');
+  //           _channel.sink.add(jsonEncode({
+  //             "event": "pusher:subscribe",
+  //             "data": {
+  //               "channel": "customer.${id}",
+  //               "auth": authData['auth'].toString(),
+  //             },
+  //           }));
+  //         } else {
+  //           log('Failed to authenticate: ${authResponse.body}');
+  //         }
+  //       }
+  //       try {
+  //         final decodedEvent = jsonDecode(event);
+  //         log('Decoded event: $decodedEvent');
+  //         if (decodedEvent is Map<String, dynamic>) {
+  //           log('Decoded event:222 $decodedEvent');
 
-            if (decodedEvent.containsKey('event') &&
-                decodedEvent['event'] == 'acceptRequest') {
-              log('Decoded event:333 $decodedEvent');
-              if (mounted) {
-                setState(() {
-                  final data = jsonDecode(decodedEvent['data']);
+  //           if (decodedEvent.containsKey('event') &&
+  //               decodedEvent['event'] == 'acceptRequest') {
+  //             log('Decoded event:333 $decodedEvent');
+  //             if (mounted) {
+  //               setState(() {
+  //                 final data = jsonDecode(decodedEvent['data']);
 
-                  if (data != null &&
-                      data['customer'] != null &&
-                      data['driver'] != null) {
-                    final customer = data['customer'];
-                    // بيانات الزبون
-                    final driverName =
-                        customer['driver']['name'] ?? 'غير متوفر';
-                    final driverPhone =
-                        customer['driver']['phone_number'] ?? 'غير متوفر';
-                    // int driverGender =
-                    // customer['driver']['phone_number'] ?? 'غير متوفر';
-                    // customer['driver']['gender'] ?? 'غير متوفر';
+  //                 if (data != null &&
+  //                     data['customer'] != null &&
+  //                     data['driver'] != null) {
+  //                   final customer = data['customer'];
+  //                   // بيانات الزبون
+  //                   final driverName =
+  //                       customer['driver']['name'] ?? 'غير متوفر';
+  //                   final driverPhone =
+  //                       customer['driver']['phone_number'] ?? 'غير متوفر';
+  //                   // int driverGender =
+  //                   // customer['driver']['phone_number'] ?? 'غير متوفر';
+  //                   // customer['driver']['gender'] ?? 'غير متوفر';
 
-                    // إضافة إشعار جديد مع تفاصيل الزبون والسائق
-                    Get.find<NotificationController>().addNotification(
-                      driverName,
-                      driverPhone, /*driverGender*/
-                    );
-                    Get.snackbar(
-                      'Your request has been accepted, we have sent you the driver:'
-                          .tr,
-                      '${'driverName'.tr} $driverName - ${'driverPhone'.tr} $driverPhone',
-                      colorText: AppColors.white,
-                    );
-                    playNotificationSound();
-                  } else {
-                    log('بيانات غير كافية لعرض الإشعار');
-                  }
-                });
-              }
-            }
-          }
-        } catch (e) {
-          log('Error decoding event: $e');
-        }
-      },
-      onError: (error) {
-        log('WebSocket error: $error');
-      },
-      onDone: () {
-        log('WebSocket connection closed');
-        _reconnect();
-      },
-      cancelOnError: true,
-    );
-  }
+  //                   // إضافة إشعار جديد مع تفاصيل الزبون والسائق
+  //                   Get.find<NotificationController>().addNotification(
+  //                     driverName,
+  //                     driverPhone, /*driverGender*/
+  //                   );
+  //                   Get.snackbar(
+  //                     'Your request has been accepted, we have sent you the driver:'
+  //                         .tr,
+  //                     '${'driverName'.tr} $driverName - ${'driverPhone'.tr} $driverPhone',
+  //                     colorText: AppColors.white,
+  //                   );
+  //                   playNotificationSound();
+  //                 } else {
+  //                   log('بيانات غير كافية لعرض الإشعار');
+  //                 }
+  //               });
+  //             }
+  //           }
+  //         }
+  //       } catch (e) {
+  //         log('Error decoding event: $e');
+  //       }
+  //     },
+  //     onError: (error) {
+  //       log('WebSocket error: $error');
+  //     },
+  //     onDone: () {
+  //       log('WebSocket connection closed');
+  //       _reconnect();
+  //     },
+  //     cancelOnError: true,
+  //   );
+  // }
 
-  void _reconnect() {
-    if (_reconnectAttempts < _maxReconnectAttempts) {
-      _reconnectAttempts++;
-      print('Attempting to reconnect... ($_reconnectAttempts)');
-      Future.delayed(_reconnectDelay, () {
-        _connectToWebSocket();
-      });
-    } else {
-      print('Max reconnect attempts reached. Giving up.');
-    }
-  }
+  // void _reconnect() {
+  //   if (_reconnectAttempts < _maxReconnectAttempts) {
+  //     _reconnectAttempts++;
+  //     print('Attempting to reconnect... ($_reconnectAttempts)');
+  //     Future.delayed(_reconnectDelay, () {
+  //       _connectToWebSocket();
+  //     });
+  //   } else {
+  //     print('Max reconnect attempts reached. Giving up.');
+  //   }
+  // }
 
-  @override
-  void dispose() {
-    _channel.sink.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _channel.sink.close();
+  //   super.dispose();
+  // }
 
   final List<Widget> pages = [
     const Requests(),
@@ -200,6 +200,7 @@ class _BottombarState extends State<Bottombar> {
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return Scaffold(
+      backgroundColor: AppColors.textColor,
       body: Stack(
         children: [
           pages[currentIndex],
@@ -252,7 +253,7 @@ class _BottombarState extends State<Bottombar> {
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                     child: const Icon(
-                      Icons.car_repair_outlined,
+                      Icons.home_rounded,
                       color: AppColors.textField_color,
                     ),
                   ),
@@ -260,20 +261,12 @@ class _BottombarState extends State<Bottombar> {
               ),
             ),
       bottomNavigationBar: BottomAppBar(
-        color: AppColors.white,
+        color: const Color.fromARGB(255, 45, 44, 44),
         shape: const CircularNotchedRectangle(),
         elevation: 0,
         height: 68.h,
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Color.fromARGB(255, 239, 234, 234),
-                width: 1,
-              ),
-            ),
-          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

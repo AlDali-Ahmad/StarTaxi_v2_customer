@@ -182,55 +182,33 @@ class _OrderCarPageState extends State<OrderCarPage> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.BackgroundColor,
-        title: Text(
-          'Customize order'.tr,
-          style: const TextStyle(color: Colors.amber),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
-        ),
-      ),
+          shadowColor: AppColors.orange1,
+          backgroundColor: AppColors.textColor,
+          title: Text(
+            'طلب تكسي',
+            style: TextStyle(
+              color: AppColors.white,
+              fontSize: 20.sp,
+            ),
+          ),
+          leading: const BackButton(
+            color: AppColors.white,
+          )),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
                 height: 400.h,
                 child: GoogleMap(
                   onTap: (LatLng latLng) async {
-                    // endLatitude = latLng.latitude;
-                    // endLongitude = latLng.longitude;
-                    // try {
-                    // List<Placemark> placemarks = await placemarkFromCoordinates(
-                    //     latLng.latitude, latLng.longitude);
-
-                    // if (placemarks.isNotEmpty) {
-                    //   print('***************************************************');
                     log('**************');
                     log('${latLng.latitude}');
                     log('${latLng.longitude}');
                     log('**************');
-                    // Get.snackbar('title', '${placemarks[0].country}');
-                    // print(placemarks[0].country);
-                    // print(placemarks[0].street);
-                    // print(placemarks[0].locality);
-                    // print(placemarks[0].postalCode);
-                    // print(placemarks[0].administrativeArea);
-
                     markers.add(Marker(
                         markerId: const MarkerId("1"),
                         position: LatLng(latLng.latitude, latLng.longitude)));
                     setState(() {});
-                    //   } else {
-                    //     print("No placemarks found.");
-                    //   }
-                    // } catch (e) {
-                    //   print("Error occurred: $e");
-                    // }
                   },
                   markers: markers.toSet(),
                   initialCameraPosition: cameraPosition,
@@ -423,7 +401,7 @@ class _OrderCarPageState extends State<OrderCarPage> {
                           );
                         }
                       },
-                      text: 'Request a Taxi'.tr,
+                      text: 'اطلب الآن',
                       width: size.width / 1.7,
                     ),
                     SizedBox(height: 10.h),

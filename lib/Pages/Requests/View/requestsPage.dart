@@ -25,14 +25,14 @@ class _RequestsState extends State<Requests> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/bactawsilla.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage('assets/images/bactawsilla.png'),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -47,31 +47,35 @@ class _RequestsState extends State<Requests> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 10.h),
                     Text(
-                       'Select the type of service you want :'.tr,
-                       style: TextStyle(fontSize: 16.sp,
-                      color: Colors.yellow,),
-                      
+                      'أين تريد الذهاب ؟ إطلب الآن',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white,
+                      ),
                     ),
                     SizedBox(height: 40.h),
                     LoadingButtonWidget(
-                        text: 'Request a taxi'.tr,
+                        borderRadius: 20,
+                        text: 'طلب تكسي',
                         onPressed: () {
                           Get.to(() => const OrderCarPage());
                         }),
                     SizedBox(height: 30.h),
                     LoadingButtonWidget(
-                      text: 'Rent a car'.tr,
+                      text: 'إستئجار تكسي',
                       onPressed: () {
                         Get.to(TimerPage());
                       },
+                      borderRadius: 20,
                       lodingColor: AppColors.textColor,
-                      backgroundColor1: AppColors.white,
-                      backgroundColor2: AppColors.white,
-                      textColor: AppColors.orange2,
-                      borderColor: AppColors.orange2,
+                      backgroundColor1: AppColors.nullColor,
+                      backgroundColor2: AppColors.nullColor,
+                      textColor: AppColors.white,
+                      borderColor: AppColors.white,
                     ),
                     SizedBox(height: 10.h),
                   ],
