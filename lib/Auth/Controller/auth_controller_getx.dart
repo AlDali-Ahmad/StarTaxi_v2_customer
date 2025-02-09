@@ -96,13 +96,15 @@ class AuthController extends GetxController {
     print(data);
     try {
       final response = await http.post(
-        Uri.parse('${Url.url}api/login'), 
+        Uri.parse('${Url.url}api/login'),
         body: jsonEncode(data),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
       );
+      print('Response Status: ${response.statusCode}');
+      print('Response Body: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -126,6 +128,7 @@ class AuthController extends GetxController {
         prefs.setString('email', currentEmail);
         prefs.setString('mail_code_verified_at', mail_code_verified_at);
         log('token: $token');
+        Get.off(() => const Bottombar());
         return responseData;
       } else if (response.statusCode == 422) {
         return {
@@ -137,9 +140,8 @@ class AuthController extends GetxController {
         };
       }
     } catch (error) {
-      return {
-        'error': 'Error occurred: $error',
-      };
+      print('Login Error: $error');
+      return {'error': 'Error occurred: $error'};
     }
   }
 
