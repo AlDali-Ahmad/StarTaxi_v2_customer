@@ -52,16 +52,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.BackgroundColor,
+        backgroundColor: AppColors.textColor,
         title: Text(
           'edit_profile_page'.tr, // "Edit Profile Page"
-          style: const TextStyle(color: Colors.amber),
+          style: const TextStyle(color: Colors.white),
         ),
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+          icon: const Icon(Icons.arrow_back, color: AppColors.white),
         ),
       ),
       body: SingleChildScrollView(
@@ -76,21 +76,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: SizedBox(
-                  width: 100.w,
-                  height: 100.h,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
-                      'assets/images/car1.png',
-                      height: 110.h,
-                      width: 120.w,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/images/car1.png',
-                        );
-                      },
-                    ),
+                  // width: 100.w,
+                  // height: 100.h,
+                  child: Image.asset(
+                    height: 130.h,
+                    width: 150.w,
+                    'assets/images/logo_star_taxi.png',
                   ),
                 ),
               ),
@@ -117,6 +108,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(height: size.height / 100),
               // Password field
               CustomPasswordField(
+                hintText: 'كلمة المرور الجديدة',
                 controller: authController.passwordController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -130,7 +122,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               SizedBox(height: size.height / 100),
               CustomPasswordField(
-                hintText: 'confirm_password'.tr,
+                hintText: 'تأكيد كلمة المرور',
                 controller: authController.passwordConfirmationController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -142,8 +134,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return null;
                 },
               ),
-              SizedBox(height: size.height / 80),
+              SizedBox(height: size.height / 40),
               CustomButton(
+                  border_redios: 20,
                   onPressed: () {
                     authController.updateProfile();
                   },

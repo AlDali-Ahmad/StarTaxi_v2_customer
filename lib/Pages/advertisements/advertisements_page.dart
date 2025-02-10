@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tawsella_final/Pages/advertisements/data/advertisements_data.dart';
@@ -5,6 +7,7 @@ import 'package:tawsella_final/Pages/advertisements/model/advertisements.dart';
 import 'package:tawsella_final/Pages/advertisements/model/advertisements_model.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
+import 'package:tawsella_final/utils/url.dart';
 
 class AdvertisementsPage extends StatefulWidget {
   const AdvertisementsPage({super.key});
@@ -23,7 +26,7 @@ class _AdvertisementsPageState extends State<AdvertisementsPage> {
         (e) => AdvertisementsModel.fromJson(e),
       ),
     );
-    print(advertisements);
+    log(advertisements.toString());
     setState(() {});
   }
 
@@ -75,15 +78,15 @@ class _AdvertisementsPageState extends State<AdvertisementsPage> {
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
                               image: NetworkImage(
-                                advertisements[index].image,
+                                '${Url.url}${advertisements[index].image}',
                               ),
                               fit: BoxFit.cover,
                             ),
                           ),
                           child: Image.network(
-                            height: 30.h,
-                            width: 30.w,
-                            advertisements[index].logo,
+                            height: 40.h,
+                            width: 40.w,
+                            '${Url.urlImage}${advertisements[index].logo}',
                             fit: BoxFit.cover,
                           ),
                         ),

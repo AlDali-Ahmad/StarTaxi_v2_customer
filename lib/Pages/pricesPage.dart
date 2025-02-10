@@ -78,7 +78,7 @@
 //             hintStyle: TextStyle(color: Colors.amber),
 //             border: InputBorder.none,
 //             icon: Icon(Icons.search, color: AppColors.orange1),
-           
+
 //           ),
 //            style: const TextStyle(color: Colors.white),
 //         ),
@@ -139,8 +139,8 @@
 //   }
 // }
 
-
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tawsella_final/utils/app_colors.dart';
@@ -188,13 +188,14 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
             filteredMovements = movements;
           });
         } else {
-          print('No data found');
+          log('No data found');
         }
       } else {
-        print('Request failed with status: ${response.statusCode}');
+        log('Request failed with status: ${response.statusCode}');
+        log('Request failed: ${response.body}');
       }
     } catch (e) {
-      print('Error fetching data: $e');
+      log('Error fetching data: $e');
     }
   }
 
@@ -213,14 +214,14 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.BackgroundColor,
+        backgroundColor: AppColors.textColor,
         title: TextField(
           onChanged: filterSearchResults,
           decoration: InputDecoration(
             hintText: 'search_movement_type'.tr,
-            hintStyle: const TextStyle(color: Colors.amber),
+            hintStyle: const TextStyle(color: Colors.white),
             border: InputBorder.none,
-            icon: const Icon(Icons.search, color: AppColors.orange1),
+            icon: const Icon(Icons.search, color: AppColors.white),
           ),
           style: const TextStyle(color: Colors.white),
         ),
@@ -242,7 +243,8 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
                   )
                 : const Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.orange1),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(AppColors.orange1),
                     ),
                   )
             : ListView.builder(

@@ -30,7 +30,7 @@ class _RequestsState extends State<Requests> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 250.h,
+              height: 230.h,
               decoration: const BoxDecoration(
                 color: AppColors.textColor,
                 borderRadius: BorderRadius.only(

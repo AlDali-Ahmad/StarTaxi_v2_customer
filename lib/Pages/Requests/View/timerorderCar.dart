@@ -185,7 +185,7 @@ class _TimerPageState extends State<TimerPage> {
         throw Exception('Failed to load phone number');
       }
     } catch (e) {
-      print('Error fetching phone number: $e');
+      log('Error fetching phone number: $e');
       return null;
     }
   }

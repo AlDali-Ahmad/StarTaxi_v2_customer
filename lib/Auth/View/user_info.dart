@@ -16,16 +16,16 @@ class UserInfoPage extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.BackgroundColor,
+        backgroundColor: AppColors.textColor,
         title: Text(
-          'userProfilePage'.tr, 
-          style: const TextStyle(color: Colors.amber),
+          'userProfilePage'.tr,
+          style: const TextStyle(color: Colors.white),
         ),
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+          icon: const Icon(Icons.arrow_back, color: AppColors.white),
         ),
       ),
       body: Center(
@@ -72,17 +72,17 @@ class UserInfoPage extends StatelessWidget {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(1.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: SizedBox(
-                            width: size.width / 1.8,
-                            height: size.height / 4,
+                            // width: size.width / 1.8,
+                            // height: size.height / 4,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
                               child: Image.network(
                                 userData['avatar'] != null &&
                                         userData['avatar'].isNotEmpty
                                     ? '${Url.url}${userData['avatar']}'
-                                    : 'assets/images/car1.png', 
+                                    : 'assets/images/logo_star_taxi.png',
                                 height: 110.h,
                                 width: 120.w,
                                 fit: BoxFit.cover,
@@ -95,8 +95,8 @@ class UserInfoPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        CustomText(text: 'fullName'.tr),
-                        SizedBox(height: 3.h),
+                        // CustomText(text: 'fullName'.tr),
+                        SizedBox(height: 10.h),
                         TextFormField(
                           decoration: InputDecoration(
                             labelStyle: const TextStyle(
@@ -104,7 +104,7 @@ class UserInfoPage extends StatelessWidget {
                             ),
                             prefixIcon: const Icon(Icons.person),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(20),
                             ),
                             filled: true,
                             fillColor: AppColors.textField_color,
@@ -113,7 +113,7 @@ class UserInfoPage extends StatelessWidget {
                           readOnly: true,
                         ),
                         const SizedBox(height: 20),
-                        CustomText(text: 'phoneNumber'.tr), 
+                        // CustomText(text: 'phoneNumber'.tr),
                         SizedBox(height: 3.h),
                         TextFormField(
                           decoration: InputDecoration(
@@ -124,14 +124,14 @@ class UserInfoPage extends StatelessWidget {
                             filled: true,
                             fillColor: AppColors.textField_color,
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
                           ),
                           initialValue: userData['phone_number'] ?? 'N/A',
                           readOnly: true,
                         ),
                         const SizedBox(height: 20),
-                        CustomText(text: 'yourEmail'.tr),
+                        // CustomText(text: 'yourEmail'.tr),
                         SizedBox(height: 3.h),
                         TextFormField(
                           decoration: InputDecoration(
@@ -142,7 +142,7 @@ class UserInfoPage extends StatelessWidget {
                             fillColor: AppColors.textField_color,
                             prefixIcon: const Icon(Icons.email),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
                           ),
                           initialValue: userData['email'],
@@ -150,15 +150,19 @@ class UserInfoPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
+                    const Spacer(),
                     LoadingButtonWidget(
+                      borderRadius: 20,
+                      backgroundColor1: AppColors.white,
+                      backgroundColor2: AppColors.white,
+                      textColor: AppColors.textColor,
                       onPressed: () {
-                        Get.to(() => EditProfilePage(userId: '${userData['id']}'));
+                        Get.to(
+                            () => EditProfilePage(userId: '${userData['id']}'));
                       },
                       text: 'updateUserInfo'.tr,
                     ),
-                    const SizedBox(height: 20),
-                    
                   ],
                 ),
               );

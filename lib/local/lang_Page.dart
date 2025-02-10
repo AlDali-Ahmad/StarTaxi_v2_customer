@@ -6,24 +6,24 @@ import 'local_Controller.dart';
 
 class LanguagesPage extends StatelessWidget {
   const LanguagesPage({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final languageController = Get.put(MyLocalController());
 
     return Scaffold(
-            appBar: AppBar(
-        backgroundColor: AppColors.BackgroundColor,
-        title:Text(
+      appBar: AppBar(
+        backgroundColor: AppColors.textColor,
+        title: Text(
           'Languages'.tr,
-          style: TextStyle(color: Colors.amber),
+          style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+          icon: const Icon(Icons.arrow_back, color: AppColors.white),
         ),
       ),
       body: Center(
@@ -62,7 +62,6 @@ class LanguagesPage extends StatelessWidget {
                 ),
               ),
               Container(width: size.width / 1.1, child: const Divider()),
-
             ],
           ),
         ),

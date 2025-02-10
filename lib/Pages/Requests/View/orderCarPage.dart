@@ -393,14 +393,14 @@ class _OrderCarPageState extends State<OrderCarPage> {
                     SizedBox(height: 20.h),
                     LoadingButtonWidget(
                       onPressed: () {
-                        if (_token != null && _token!.isNotEmpty) {
-                          sendLocationToDataBase();
-                        } else {
-                          CustomSnackbar.show(
-                            context,
-                            'تأكد من تسجيل الدخول أولاً',
-                          );
-                        }
+                        // if (_token != null && _token!.isNotEmpty) {
+                        //   sendLocationToDataBase();
+                        // } else {
+                        //   CustomSnackbar.show(
+                        //     context,
+                        //     'تأكد من تسجيل الدخول أولاً',
+                        //   );
+                        // }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
