@@ -264,7 +264,7 @@ class _BottombarState extends State<Bottombar> {
         color: const Color.fromARGB(255, 45, 44, 44),
         shape: const CircularNotchedRectangle(),
         elevation: 0,
-        height: 68.h,
+        height: 90.h,
         child: SizedBox(
           width: double.infinity,
           child: Row(

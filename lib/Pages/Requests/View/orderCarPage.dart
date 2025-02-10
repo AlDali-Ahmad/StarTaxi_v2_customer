@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tawsella_final/Pages/Requests/View/order_confirm.dart';
 import 'package:tawsella_final/Pages/bottombar.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
@@ -400,6 +401,20 @@ class _OrderCarPageState extends State<OrderCarPage> {
                             'تأكد من تسجيل الدخول أولاً',
                           );
                         }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsPage(
+                              from: location.text,
+                              to: destination.text,
+                              gender: _gender ?? '',
+                              tybe: (_selectedValue == 't-m-t-1')
+                                  ? 'Internal request'.tr
+                                  : 'external request'.tr,
+                              price: 10,
+                            ),
+                          ),
+                        );
                       },
                       text: 'اطلب الآن',
                       width: size.width / 1.7,

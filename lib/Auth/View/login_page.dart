@@ -56,7 +56,9 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 20),
-                        child: Image.asset("assets/images/logo_star_taxi.png",),
+                        child: Image.asset(
+                          "assets/images/logo_star_taxi.png",
+                        ),
                       ),
                       CustomText(
                         text: 'login_page'.tr,

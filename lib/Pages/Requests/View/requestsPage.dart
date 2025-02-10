@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tawsella_final/Pages/Requests/View/orderCarPage.dart';
 import 'package:tawsella_final/Pages/Requests/View/timerorderCar.dart';
+import 'package:tawsella_final/Pages/advertisements/advertisements_page.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
 
 import 'package:tawsella_final/utils/app_colors.dart';
@@ -23,16 +24,9 @@ class _RequestsState extends State<Requests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          // Container(
-          //   decoration: const BoxDecoration(
-          //     image: DecorationImage(
-          //       image: AssetImage('assets/images/bactawsilla.png'),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
+          const AdvertisementsPage(),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
