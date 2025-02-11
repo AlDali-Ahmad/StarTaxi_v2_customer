@@ -177,12 +177,16 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         if (jsonData['data']['movements'] != null) {
+          log(jsonData['data']['movements'].toString());
           setState(() {
             movements =
                 List<Map<String, dynamic>>.from(jsonData['data']['movements'])
                     .map((item) => {
                           'type': item['type'],
-                          'price': item['price'],
+                          'price1': item['price1'],
+                          'price2': item['price2'],
+                          'payment1': item['payment1'],
+                          'payment2': item['payment2'],
                         })
                     .toList();
             filteredMovements = movements;
@@ -258,23 +262,47 @@ class _MovementTypesPageState extends State<MovementTypesPage> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.all(16.0),
-                      title: Text(
-                        '${'destination'.tr}: ${movement['type']}',
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.orange1,
+                        contentPadding: const EdgeInsets.all(16.0),
+                        title: Text(
+                          '${'destination'.tr}: ${movement['type']}',
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.orange1,
+                          ),
                         ),
-                      ),
-                      subtitle: Text(
-                        '${'price'.tr}: ${movement['price']}',
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            if (movement['price1'] != null)
+                              Row(
+                                children: [
+                                  Text(
+                                    '${'price'.tr}:  ${movement['payment1']} ${movement['price1']}',
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            if (movement['price2'] != null)
+                              Row(
+                                children: [
+                                  Text(
+                                    '${'price'.tr}:${movement['payment2']} ${movement['price2']}',
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        )),
                   );
                 },
               ),
