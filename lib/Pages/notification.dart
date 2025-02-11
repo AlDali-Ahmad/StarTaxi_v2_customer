@@ -106,16 +106,16 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.BackgroundColor,
-        title: Text(
-          'Order Details'.tr,
-          style: const TextStyle(color: Colors.amber),
+        backgroundColor: AppColors.textColor,
+        title: const Text(
+          'تفاصيل الطلب',
+          style: TextStyle(color: AppColors.white),
         ),
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: const Icon(Icons.arrow_back, color: AppColors.orange1),
+          icon: const Icon(Icons.arrow_back, color: AppColors.white),
         ),
       ),
       body: Obx(() {
