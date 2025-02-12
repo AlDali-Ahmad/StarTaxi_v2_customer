@@ -85,8 +85,21 @@ class AuthController extends GetxController {
     }
   }
 
+  void showErrorSnackbar(String message) {
+    Get.snackbar(
+      'تنبيه',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      duration: const Duration(seconds: 3),
+      margin: const EdgeInsets.all(10),
+      borderRadius: 8,
+    );
+  }
+
   // دالة تسجيل الدخول
-  Future<Map<String, dynamic>?> loginUser(String email, String password) async {
+  Future<void> loginUser(String email, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? devicetoken = prefs.getString('device_token');
     final Map<String, dynamic> data = {
@@ -94,7 +107,7 @@ class AuthController extends GetxController {
       'password': password,
       'device_token': devicetoken ?? '',
     };
-    print(data);
+
     try {
       final response = await http.post(
         Uri.parse('${Url.url}api/login'),
@@ -104,8 +117,9 @@ class AuthController extends GetxController {
           'Accept': 'application/json',
         },
       );
-      print('Response Status: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+
+      log('Response Status: ${response.statusCode}');
+      log('Response Body: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -113,37 +127,54 @@ class AuthController extends GetxController {
         final String id = responseData['data']['user']['id'];
         final String email = responseData['data']['user']['email'];
         final String name = responseData['data']['user']['profile']['name'];
-        final String address = responseData['data']['user']['profile']['address'];
+        final String address =
+            responseData['data']['user']['profile']['address'];
         final String phone =
             responseData['data']['user']['profile']['phone_number'];
-        final String currentEmail = responseData['data']['user']['email'];
-        final String mail_code_verified_at =
+        final String mailCodeVerifiedAt =
             responseData['data']['user']['mail_code_verified_at'];
+        final bool isActive = responseData['data']['user']['is_active'] ?? true;
+        final bool isBanned =
+            responseData['data']['user']['is_banned'] ?? false;
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (!isActive) {
+          showErrorSnackbar(
+              'الحساب غير مفعل، يرجى التحقق من بريدك الإلكتروني لتفعيله.');
+          return;
+        }
+
+        if (isBanned) {
+          showErrorSnackbar('تم حظر حسابك، يرجى التواصل مع الدعم الفني.');
+          return;
+        }
+
         prefs.setString('token', token);
         prefs.setString('id', id);
         prefs.setString('name', name);
         prefs.setString('phone', phone);
         prefs.setString('address', address);
         prefs.setString('email', email);
-        prefs.setString('email', currentEmail);
-        prefs.setString('mail_code_verified_at', mail_code_verified_at);
+        prefs.setString('mail_code_verified_at', mailCodeVerifiedAt);
+
         log('token: $token');
         Get.off(() => const Bottombar());
-        return responseData;
       } else if (response.statusCode == 422) {
-        return {
-          'error': 'Invalid email or password',
-        };
+        showErrorSnackbar(
+            'يرجى التحقق من صحة البريد الإلكتروني أو كلمة المرور.');
+      } else if (response.statusCode == 500 || response.statusCode == 503) {
+        showErrorSnackbar('خطأ في الخادم، يرجى المحاولة لاحقًا.');
       } else {
-        return {
-          'error': 'Server error: ${response.statusCode}',
-        };
+        showErrorSnackbar('حدث خطأ غير متوقع: ${response.statusCode}');
       }
     } catch (error) {
-      print('Login Error: $error');
-      return {'error': 'Error occurred: $error'};
+      if (error.toString().contains('SocketException')) {
+        showErrorSnackbar(
+            'تعذر الاتصال بالخادم، يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
+      } else if (error.toString().contains('TimeoutException')) {
+        showErrorSnackbar('انتهت مهلة الاتصال بالخادم، يرجى المحاولة مجددًا.');
+      } else {
+        showErrorSnackbar('حدث خطأ: $error');
+      }
     }
   }
 

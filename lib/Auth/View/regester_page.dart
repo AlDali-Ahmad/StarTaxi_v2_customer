@@ -55,12 +55,10 @@ class _RegisterPageState extends State<RegisterPage> {
         },
         body: jsonEncode(data),
       );
-      if (response.statusCode == 500) {
-        CustomSnackbar.show(
-          context,
-          'email_already_used'.tr,
-        );
-      }
+
+      log('Response Status: ${response.statusCode}');
+      log('Response Body: ${response.body}');
+
       if (response.statusCode == 201 || response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         final String token = responseData['data']['token'];
@@ -83,13 +81,30 @@ class _RegisterPageState extends State<RegisterPage> {
         prefs.setString('address', address);
         prefs.setString('email', currentEmail);
         prefs.setString('mail_code_verified_at', mail_code_verified_at);
+
         Get.off(() => const VerifyEmailPage());
+      } else if (response.statusCode == 422) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        if (responseData['errors'] != null &&
+            responseData['errors']['email'] != null) {
+          showErrorSnackbar(
+            'هذا البريد الإلكتروني مستخدم بالفعل، يرجى اختيار بريد آخر.',
+          );
+        } else {
+          showErrorSnackbar(
+            'يرجى التحقق من صحة البيانات المدخلة.',
+          );
+        }
       } else {
-        log('Error: ${response.statusCode}');
-        log('Error: ${response.body}');
+        showErrorSnackbar(
+          'حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.',
+        );
       }
     } catch (error) {
       log('Error: $error');
+      showErrorSnackbar(
+        'تعذر الاتصال بالخادم، يرجى التحقق من اتصال الإنترنت.',
+      );
     }
   }
 
@@ -110,7 +125,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 20),
-                        child: Image.asset("assets/images/logo_star_taxi.png",),
+                        child: Image.asset(
+                          "assets/images/logo_star_taxi.png",
+                        ),
                       ),
                       CustomText(
                         text: 'register_page'.tr,
@@ -260,6 +277,19 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void showErrorSnackbar(String message) {
+    Get.snackbar(
+      'تنبيه',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      duration: const Duration(seconds: 3),
+      margin: const EdgeInsets.all(10),
+      borderRadius: 8,
     );
   }
 }
