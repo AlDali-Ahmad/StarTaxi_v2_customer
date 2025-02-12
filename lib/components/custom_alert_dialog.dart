@@ -21,7 +21,7 @@ class CustomAlertDialog extends StatelessWidget {
     required this.confirmButtonText,
     required this.onCancel,
     required this.onConfirm,
-    this.icon = Icons.warning, 
+    this.icon = Icons.warning,
   }) : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class CustomAlertDialog extends StatelessWidget {
         width: size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: Colors.white, 
+          color: Colors.white,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -115,7 +115,8 @@ class CustomAlertDialog extends StatelessWidget {
                   height: 38.h,
                   width: 120.w,
                   child: CustomButton(
-                    textColor: AppColors.orange2,
+                    border_color: Colors.orange,
+                    textColor: Colors.orange,
                     background_color1: AppColors.nullColor,
                     background_color2: AppColors.nullColor,
                     onPressed: onCancel,
@@ -126,6 +127,9 @@ class CustomAlertDialog extends StatelessWidget {
                   height: 38.h,
                   width: 120.w,
                   child: LoadingButtonWidget(
+                    backgroundColor1: Colors.orange,
+                    backgroundColor2: AppColors.orange,
+                    borderColor: AppColors.nullColor,
                     onPressed: onConfirm,
                     text: confirmButtonText,
                   ),

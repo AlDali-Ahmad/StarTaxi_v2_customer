@@ -114,7 +114,6 @@ class UserInfoPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         // CustomText(text: 'phoneNumber'.tr),
-                        SizedBox(height: 3.h),
                         TextFormField(
                           decoration: InputDecoration(
                             labelStyle: const TextStyle(
@@ -132,7 +131,6 @@ class UserInfoPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         // CustomText(text: 'yourEmail'.tr),
-                        SizedBox(height: 3.h),
                         TextFormField(
                           decoration: InputDecoration(
                             labelStyle: const TextStyle(
@@ -146,6 +144,22 @@ class UserInfoPage extends StatelessWidget {
                             ),
                           ),
                           initialValue: userData['email'],
+                          readOnly: true,
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
+                            filled: true,
+                            fillColor: AppColors.textField_color,
+                            prefixIcon: const Icon(Icons.add_location),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          initialValue: userData['address'] ?? 'N/A',
                           readOnly: true,
                         ),
                       ],

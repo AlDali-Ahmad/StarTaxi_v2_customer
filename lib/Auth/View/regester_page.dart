@@ -68,6 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
         final String email = responseData['data']['user']['email'];
         final String name = responseData['data']['user']['profile']['name'];
         final String currentEmail = responseData['data']['user']['email'];
+        final String address = responseData['data']['user']['address'];
         final String phone =
             responseData['data']['user']['profile']['phone_number'];
         final String mail_code_verified_at =
@@ -79,6 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
         prefs.setString('name', name);
         prefs.setString('email', email);
         prefs.setString('phone', phone);
+        prefs.setString('address', address);
         prefs.setString('email', currentEmail);
         prefs.setString('mail_code_verified_at', mail_code_verified_at);
         Get.off(() => const VerifyEmailPage());

@@ -28,7 +28,7 @@ class LoadingButtonWidget extends StatefulWidget {
     required this.onPressed,
     this.height,
     this.width,
-    this.borderRadius = 10.0,
+    this.borderRadius = 20.0,
     this.fontSize = 16.0,
     this.textColor = AppColors.white,
     this.lodingColor = AppColors.white,
@@ -62,7 +62,7 @@ class _LoadingButtonWidgetState extends State<LoadingButtonWidget> {
             borderRadius: BorderRadius.circular(widget.borderRadius!),
             border: Border.all(
               color: widget.borderColor,
-              width: 5.0,
+              width: 2.0,
             ),
           ),
           child: LoadingBtn(
@@ -76,8 +76,8 @@ class _LoadingButtonWidgetState extends State<LoadingButtonWidget> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [widget.backgroundColor1, widget.backgroundColor2],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft,
                 ),
                 borderRadius: BorderRadius.circular(widget.borderRadius!),
               ),

@@ -27,6 +27,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String name = '';
   String phoneNumber = '';
   String email = '';
+  String address = '';
 
   Future<void> userinfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -34,10 +35,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
       name = prefs.getString('name') ?? '';
       email = prefs.getString('email') ?? '';
       phoneNumber = prefs.getString('phone') ?? '';
+      address = prefs.getString('address') ?? '';
 
       authController.emailController.text = email;
       authController.nameController.text = name;
       authController.phoneNumberController.text = phoneNumber;
+      authController.addressController.text = address;
     });
   }
 
@@ -104,6 +107,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 controller: authController.emailController,
                 hintText: 'new_email'.tr,
                 iconData: Icons.email,
+              ),
+              CustomTextField(
+                controller: authController.addressController,
+                hintText: 'عنوان جديد',
+                iconData: Icons.add_location,
               ),
               SizedBox(height: size.height / 100),
               // Password field

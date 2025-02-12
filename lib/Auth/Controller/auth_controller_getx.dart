@@ -16,6 +16,7 @@ class AuthController extends GetxController {
   var passwordController = TextEditingController();
   var passwordConfirmationController = TextEditingController();
   var phoneNumberController = TextEditingController();
+  var addressController = TextEditingController();
   String genderController = "";
 
   // دالة التسجيل
@@ -112,18 +113,19 @@ class AuthController extends GetxController {
         final String id = responseData['data']['user']['id'];
         final String email = responseData['data']['user']['email'];
         final String name = responseData['data']['user']['profile']['name'];
+        final String address = responseData['data']['user']['profile']['address'];
         final String phone =
             responseData['data']['user']['profile']['phone_number'];
         final String currentEmail = responseData['data']['user']['email'];
         final String mail_code_verified_at =
             responseData['data']['user']['mail_code_verified_at'];
 
-        // تخزين البيانات في SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
         prefs.setString('id', id);
         prefs.setString('name', name);
         prefs.setString('phone', phone);
+        prefs.setString('address', address);
         prefs.setString('email', email);
         prefs.setString('email', currentEmail);
         prefs.setString('mail_code_verified_at', mail_code_verified_at);
@@ -174,6 +176,7 @@ class AuthController extends GetxController {
         'email': emailController.text,
         'name': nameController.text,
         'phone_number': phoneNumberController.text,
+        'address': addressController.text,
       };
 
       if (passwordController.text.isNotEmpty) {
@@ -195,6 +198,7 @@ class AuthController extends GetxController {
         prefs.setString('name', nameController.text);
         prefs.setString('email', emailController.text);
         prefs.setString('phone', phoneNumberController.text);
+        prefs.setString('address', phoneNumberController.text);
         Get.off(() => const Bottombar());
         log('profile_updated_successfully'.tr);
       } else {

@@ -8,6 +8,7 @@ import 'package:tawsella_final/auth/controller/auth_controller.dart';
 import 'package:tawsella_final/auth/View/user_info.dart';
 import 'package:tawsella_final/components/custom_alert_dialog.dart';
 import 'package:tawsella_final/components/custom_text.dart';
+import 'package:tawsella_final/pages/drivers_ready/page/drivers_ready_page.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import 'package:tawsella_final/utils/url.dart';
 import 'package:http/http.dart' as http;
@@ -66,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.nullColor,
         elevation: 0,
       ),
@@ -82,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  SizedBox(height: 70.h),
+                  const SizedBox(height: 70),
                   InkWell(
                     onTap: () {
                       Get.to(UserInfoPage());
@@ -118,11 +120,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 70.h),
+                  const SizedBox(height: 70),
                   Expanded(
                     child: ListView(
                       children: [
-                        SizedBox(height: 100.h),
+                        // SizedBox(height: 100.h),
                         // _buildProfileMenuItem(
                         //   icon: Icons.language,
                         //   title: 'Languages'.tr,
@@ -130,6 +132,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         //     Get.to(const LanguagesPage());
                         //   },
                         // ),
+                        _buildProfileMenuItem(
+                          icon: Icons.help_outline_sharp,
+                          title: "السائقين المتاحين",
+                          onTap: () async {
+                            Get.to(DriversReadyPage());
+                          },
+                        ),
                         _buildProfileMenuItem(
                           icon: Icons.help_outline_sharp,
                           title: 'Support & Help'.tr,
@@ -142,6 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 5.h),
                         _buildProfileMenuItem(
+                          colors: Colors.red.shade200,
                           icon: Icons.logout,
                           title: 'Logout'.tr,
                           onTap: () {
@@ -195,10 +205,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    Color colors = AppColors.white,
     Widget? trailing,
   }) {
     return Card(
-      color: Colors.white,
+      color: colors,
       elevation: 0,
       margin: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(

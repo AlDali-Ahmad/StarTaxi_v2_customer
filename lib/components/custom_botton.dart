@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.height,
-    this.border_redios = 10,
+    this.border_redios = 20,
     this.width = double.infinity,
     this.fontSize = 16.0,
     this.textColor = AppColors.white,
@@ -46,7 +46,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(border_redios!),
           border: Border.all(
             color: border_color,
-            width: 5.0,
+            width: 2.0,
           ),
         ),
         child: Center(
