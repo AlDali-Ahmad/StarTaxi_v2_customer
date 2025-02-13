@@ -54,7 +54,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       widget.endPosition.latitude,
       widget.endPosition.longitude,
     );
+    print(kmdis);
     price1 = price1 * kmdis;
+
     price2 = price2 * kmdis;
     setState(() {});
   }
@@ -93,12 +95,14 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           _buildInfoCard("جنس السائق", widget.gender, Icons.person),
           // _buildInfoCard("الوقت لوصول السائق", "07:00 دقيقة", Icons.access_time,
           //     isBlue: true),
-          // _buildInfoCard("مدة الرحلة", "16:22 دقيقة", Icons.access_time,
-          //     isBlue: true),
+          _buildInfoCard("المسافة المحسوبة", "${kmdis.toStringAsFixed(2)} KM",
+              Icons.calculate_rounded,
+              isBlue: false),
           _buildInfoCard(
               "السعر المتوقع للرحلة",
-              '${price1}.${payment1} / ${price2}.${payment2}',
-              Icons.attach_money),
+              '${price1.toStringAsFixed(2)}$payment1 / ${price2.toStringAsFixed(2)}$payment2',
+              Icons.attach_money,
+              isBlue: true),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
