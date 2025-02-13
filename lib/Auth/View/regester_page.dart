@@ -8,7 +8,6 @@ import 'package:tawsella_final/auth/View/login_page.dart';
 import 'package:tawsella_final/auth/View/verification_code.dart';
 import 'package:tawsella_final/components/customTextField.dart';
 import 'package:tawsella_final/components/custom_loading_button.dart';
-import 'package:tawsella_final/components/custom_snackbar.dart';
 import 'package:tawsella_final/components/custom_text.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 import 'package:tawsella_final/utils/url.dart';
@@ -65,8 +64,8 @@ class _RegisterPageState extends State<RegisterPage> {
         final String id = responseData['data']['user']['id'];
         final String email = responseData['data']['user']['email'];
         final String name = responseData['data']['user']['profile']['name'];
-        final String currentEmail = responseData['data']['user']['email'];
-        final String address = responseData['data']['user']['address'];
+        // final String currentEmail = responseData['data']['user']['email'];
+        final String address = responseData['data']['user']['profile']['address'];
         final String phone =
             responseData['data']['user']['profile']['phone_number'];
         final String mail_code_verified_at =
@@ -79,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
         prefs.setString('email', email);
         prefs.setString('phone', phone);
         prefs.setString('address', address);
-        prefs.setString('email', currentEmail);
+        // prefs.setString('email', currentEmail);
         prefs.setString('mail_code_verified_at', mail_code_verified_at);
 
         Get.off(() => const VerifyEmailPage());

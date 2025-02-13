@@ -133,20 +133,7 @@ class AuthController extends GetxController {
             responseData['data']['user']['profile']['phone_number'];
         final String mailCodeVerifiedAt =
             responseData['data']['user']['mail_code_verified_at'];
-        final bool isActive = responseData['data']['user']['is_active'] ?? true;
-        final bool isBanned =
-            responseData['data']['user']['is_banned'] ?? false;
-
-        if (!isActive) {
-          showErrorSnackbar(
-              'الحساب غير مفعل، يرجى التحقق من بريدك الإلكتروني لتفعيله.');
-          return;
-        }
-
-        if (isBanned) {
-          showErrorSnackbar('تم حظر حسابك، يرجى التواصل مع الدعم الفني.');
-          return;
-        }
+        
 
         prefs.setString('token', token);
         prefs.setString('id', id);
