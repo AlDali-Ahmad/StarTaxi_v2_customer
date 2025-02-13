@@ -27,9 +27,13 @@ class OrderCarPage extends StatefulWidget {
 class _OrderCarPageState extends State<OrderCarPage> {
   GoogleMapController? gms;
   List<Marker> markers = [];
+  Position? startposition;
+  Position? endposition;
+
   Future<void> initalLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
+    print("initalLocation");
 
     // التحقق مما إذا كانت خدمات الموقع مفعلة
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -48,7 +52,9 @@ class _OrderCarPageState extends State<OrderCarPage> {
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       Position position = await Geolocator.getCurrentPosition();
-
+      print("position");
+      print(position);
+      startposition = position;
       // إضافة Marker على الخريطة وتحريك الكاميرا إلى الموقع الحالي
       markers.add(Marker(
           markerId: const MarkerId("2"),
@@ -209,6 +215,17 @@ class _OrderCarPageState extends State<OrderCarPage> {
                     markers.add(Marker(
                         markerId: const MarkerId("1"),
                         position: LatLng(latLng.latitude, latLng.longitude)));
+                    endposition = Position(
+                        longitude: latLng.longitude,
+                        latitude: latLng.latitude,
+                        timestamp: DateTime.now(),
+                        accuracy: 1,
+                        altitude: 0,
+                        altitudeAccuracy: 0,
+                        heading: 0,
+                        headingAccuracy: 0,
+                        speed: 0,
+                        speedAccuracy: 0);
                     setState(() {});
                   },
                   markers: markers.toSet(),
@@ -401,6 +418,8 @@ class _OrderCarPageState extends State<OrderCarPage> {
                         //     'تأكد من تسجيل الدخول أولاً',
                         //   );
                         // }
+                        print(startposition);
+                        print(endposition);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -411,9 +430,9 @@ class _OrderCarPageState extends State<OrderCarPage> {
                               tybe: (_selectedValue == 't-m-t-1')
                                   ? 'Internal request'.tr
                                   : 'external request'.tr,
-                              price: 10,          
-                             startPosition: ,
-                              endPosition: ,
+                              price: 10,
+                              startPosition: startposition!,
+                              endPosition: endposition!,
                             ),
                           ),
                         );
