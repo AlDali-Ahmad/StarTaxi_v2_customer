@@ -1,20 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:tawsella_final/Pages/Requests/data/reqwest_data.dart';
 import 'package:tawsella_final/utils/app_colors.dart';
 
-class OrderDetailsPage extends StatelessWidget {
+class OrderDetailsPage extends StatefulWidget {
   final String from;
   final String to;
   final String tybe;
   final String gender;
   final double price;
+  final Position startPosition;
+  final Position endPosition;
 
-  const OrderDetailsPage(
-      {super.key,
-      required this.from,
-      required this.to,
-      required this.tybe,
-      required this.gender,
-      required this.price});
+  const OrderDetailsPage({
+    super.key,
+    required this.from,
+    required this.to,
+    required this.tybe,
+    required this.gender,
+    required this.price,
+    required this.startPosition,
+    required this.endPosition,
+  });
+
+  @override
+  State<OrderDetailsPage> createState() => _OrderDetailsPageState();
+}
+
+class _OrderDetailsPageState extends State<OrderDetailsPage> {
+  Map<String, dynamic> responseData = {};
+  double price1 = 0;
+  String payment1 = '';
+  double price2 = 0;
+  String payment2 = '';
+  double kmdis = 0;
+  Future<double> calculateDistance(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) async {
+    double distanceInMeters = Geolocator.distanceBetween(
+        startLatitude, startLongitude, endLatitude, endLongitude);
+
+    return distanceInMeters / 1000; // Convert meters to km
+  }
+
+  inject() async {
+    responseData = await getkmprice();
+    price1 = responseData['data']?['price1'] ?? 0;
+    payment1 = responseData['data']?['payment1'] ?? "";
+    price2 = responseData['data']?['price2'] ?? 0;
+    payment2 = responseData['data']?['payment2'] ?? "";
+    kmdis = await calculateDistance(
+      widget.startPosition.latitude,
+      widget.startPosition.longitude,
+      widget.endPosition.latitude,
+      widget.endPosition.longitude,
+    );
+    price1 = price1 * kmdis;
+    price2 = price2 * kmdis;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      inject();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +87,18 @@ class OrderDetailsPage extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 10),
-          _buildInfoCard("التوجه من", from, Icons.location_on),
-          _buildInfoCard("التوجه إلى", to, Icons.location_on),
-          _buildInfoCard("نوع الطلب", tybe, Icons.pedal_bike),
-          _buildInfoCard("جنس السائق", gender, Icons.person),
+          _buildInfoCard("التوجه من", widget.from, Icons.location_on),
+          _buildInfoCard("التوجه إلى", widget.to, Icons.location_on),
+          _buildInfoCard("نوع الطلب", widget.tybe, Icons.pedal_bike),
+          _buildInfoCard("جنس السائق", widget.gender, Icons.person),
           // _buildInfoCard("الوقت لوصول السائق", "07:00 دقيقة", Icons.access_time,
           //     isBlue: true),
           // _buildInfoCard("مدة الرحلة", "16:22 دقيقة", Icons.access_time,
           //     isBlue: true),
           _buildInfoCard(
-              "السعر المتوقع للرحلة", price.toString(), Icons.attach_money),
+              "السعر المتوقع للرحلة",
+              '${price1}.${payment1} / ${price2}.${payment2}',
+              Icons.attach_money),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

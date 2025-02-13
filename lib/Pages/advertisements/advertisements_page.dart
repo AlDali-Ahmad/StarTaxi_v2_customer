@@ -64,8 +64,7 @@ class _AdvertisementsPageState extends State<AdvertisementsPage> {
                       controller: FlipCardController(),
                       onTapFlipping: true,
                       rotateSide: RotateSide.right,
-                      axis: FlipAxis
-                          .vertical, // Flip axis (horizontal or vertical)
+                      axis: FlipAxis.vertical,
                       frontWidget: Container(
                         height: 150.h,
                         width: 200.w,
