@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,7 +73,6 @@ class _OrderCarPageState extends State<OrderCarPage> {
   @override
   void initState() {
     initalLocation();
-    _getToken();
     // initalStram();
     super.initState();
   }
@@ -94,95 +92,6 @@ class _OrderCarPageState extends State<OrderCarPage> {
 
   String? _gender;
   String? _selectedValue;
-  String? _token;
-
-  Future<void> _getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _token = prefs.getString('token');
-    });
-  }
-
-  Future<void> sendLocationToDataBase() async {
-    String apiUrl = '${Url.url}api/movements';
-    try {
-      // الحصول على الموقع الحالي
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      // التحقق من أن الحقول غير فارغة
-      if (location.text.isEmpty ||
-          destination.text.isEmpty ||
-          _gender == null) {
-        CustomSnackbar.show(
-          context,
-          'الرجاء ملئ كامل الحقول',
-        );
-        return;
-      }
-
-      // إعداد البيانات لإرسالها إلى الـ API
-      Map<String, dynamic> payload = {
-        'movement_type_id': _selectedValue,
-        'start_latitude': position.latitude,
-        'start_longitude': position.longitude,
-        'start_address': location.text,
-        'destination_address': destination.text,
-        'gender': _gender,
-      };
-
-      // إرسال الطلب
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_token'
-        },
-        body: jsonEncode(payload),
-      );
-
-      // التحقق من نجاح الطلب
-      if (response.statusCode == 200) {
-        // تحليل الاستجابة لاستخراج الـ movement_id
-        var responseBody = jsonDecode(response.body);
-        String movementId = responseBody['data']['movement_id'];
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('movement_id', movementId);
-
-        log('تم إرسال بيانات الموقع بنجاح.');
-        log('Movement ID: $movementId');
-
-        // عرض رسالة نجاح باستخدام Get.snackbar
-        Get.snackbar(
-          '',
-          'Your request has been created successfully'.tr,
-          snackPosition: SnackPosition.TOP,
-          duration: const Duration(seconds: 5),
-          colorText: Colors.white,
-        );
-
-        // الانتقال إلى الصفحة التالية بعد النجاح
-        Get.off(() => const Bottombar());
-      } else if (response.statusCode == 429) {
-        Get.snackbar(
-          '',
-          'You have recently requested a car. Please wait a moment while your request is being processed'
-              .tr,
-          snackPosition: SnackPosition.TOP,
-          duration: const Duration(seconds: 5),
-          colorText: Colors.white,
-        );
-      } else {
-        log('فشل في إرسال بيانات الموقع. الرمز الحالة: ${response.statusCode}');
-        log('فشل في إرسال بيانات الموقع. الاستجابة: ${response.body}');
-      }
-    } catch (e) {
-      log('حدث خطأ أثناء إرسال بيانات الموقع: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -410,32 +319,39 @@ class _OrderCarPageState extends State<OrderCarPage> {
                     SizedBox(height: 20.h),
                     LoadingButtonWidget(
                       onPressed: () {
-                        // if (_token != null && _token!.isNotEmpty) {
-                        //   sendLocationToDataBase();
-                        // } else {
-                        //   CustomSnackbar.show(
-                        //     context,
-                        //     'تأكد من تسجيل الدخول أولاً',
-                        //   );
-                        // }
                         print(startposition);
                         print(endposition);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OrderDetailsPage(
-                              from: location.text,
-                              to: destination.text,
-                              gender: _gender ?? '',
-                              tybe: (_selectedValue == 't-m-t-1')
-                                  ? 'Internal request'.tr
-                                  : 'external request'.tr,
-                              price: 10,
-                              startPosition: startposition!,
-                              endPosition: endposition!,
+                        if (startposition != null && endposition != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderDetailsPage(
+                                from: location.text,
+                                to: destination.text,
+                                gender: _gender ?? '',
+                                tybe: (_selectedValue == 't-m-t-1')
+                                    ? 'Internal request'.tr
+                                    : 'external request'.tr,
+                                price: 10,
+                                startPosition: startposition!,
+                                endPosition: endposition!,
+                                movementtypeid: _selectedValue ?? '',
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          if (startposition == null) {
+                            CustomSnackbar.show(
+                              context,
+                              'الرجاء تفيل خدمة الموقع',
+                            );
+                          } else {
+                            CustomSnackbar.show(
+                              context,
+                              'الرجاء تحديد الوجهة على الخريطة',
+                            );
+                          }
+                        }
                       },
                       text: 'اطلب الآن',
                       width: size.width / 1.7,
