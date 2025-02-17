@@ -184,7 +184,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       body: (isloading)
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const Row(),
                 CircularProgressIndicator(
                   color: AppColors.orange1,
                   strokeWidth: 5.w,
